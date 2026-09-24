@@ -11,7 +11,7 @@
     {
       "name": "deep-research-collab",
       "description": "证据导向型深度调研协同——三级检索协同 + 证据 ID 体系 + 缺口回退，交付「文档版 Markdown 报告 + 单文件离线 HTML 交互式报告」双产物。每个结论都能点回原文。",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "herong113",
         "url": "https://github.com/herong113"

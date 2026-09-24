@@ -29,6 +29,7 @@ import html
 import json
 import math
 import os
+import re
 import sys
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -134,6 +135,43 @@ def esc(text: Any) -> str:
     防止的失败：payload 内含 < > & " ' 时破坏 DOM 结构，或形成脚本注入。
     """
     return html.escape(as_str(text), quote=True)
+
+
+_BOLD_RE = re.compile(r"\*\*(.+?)\*\*", re.DOTALL)
+# 裸 URL：排除空白与中英文收尾标点，避免把「。」「）」「,」吞进链接
+_URL_RE = re.compile(r"(https?://[^\s<>\"'）】」，。；、]+)")
+
+
+def linkify(escaped_text: str) -> str:
+    """把已转义文本里的裸 URL 变成可点击链接。
+
+    防止的失败：附录正文里逐条给出的来源链接原样输出为纯文本，读者无法点击核验——
+    而本报告的核心卖点正是「可点击溯源」（实测附录段 <a href> = 0）。
+
+    输入必须**已过 esc()/rich()**，否则 URL 里的 & 会截断 href。
+    只用于附录正文；不得用于 SVG <text>/<title> 或 HTML 属性。
+    """
+    return _URL_RE.sub(
+        r'<a href="\1" target="_blank" rel="noopener noreferrer">\1</a>', escaped_text
+    )
+
+
+def rich(text: Any) -> str:
+    """自由文本渲染：先转义，再把 **加粗** 转成 <strong>。
+
+    防止的失败：payload 撰写方按 Markdown 习惯写 **重点**，而本生成器原先一律
+    esc() 后直接输出，导致成品 HTML 里出现字面星号（实测一份报告 44 处），
+    读者看到的是「**独立来源偏少**」而不是加粗的正文。
+
+    仅用于正文类自由文本（summary 条目、finding claim、争议主张、证据正文、
+    附录段落、充分性说明）。**不得**用于 HTML 属性或 SVG <text>/<title>——
+    那些位置插入标签会破坏结构或无法渲染。
+    转义在前、替换在后：星号不是 html.escape 的处理对象，顺序无歧义；
+    未配对的多余 ** 一律删除，保证成品不残留字面星号。
+    """
+    escaped = esc(text)
+    escaped = _BOLD_RE.sub(r"<strong>\1</strong>", escaped)
+    return escaped.replace("**", "")
 
 
 def to_number(value: Any, default: float = 0.0) -> float:
@@ -877,7 +915,7 @@ def render_overview(payload: Dict[str, Any], strict: bool) -> str:
         if values:
             parts.append("<ul>")
             for item in values:
-                parts.append(f"<li>{esc(item)}</li>")
+                parts.append(f"<li>{rich(item)}</li>")
             parts.append("</ul>")
         else:
             parts.append('<p class="empty-hint">未提供。</p>')
@@ -888,7 +926,7 @@ def render_overview(payload: Dict[str, Any], strict: bool) -> str:
     if summary:
         parts.append("<ol class=\"summary-list\">")
         for item in summary:
-            parts.append(f"<li>{esc(item)}</li>")
+            parts.append(f"<li>{rich(item)}</li>")
         parts.append("</ol>")
     else:
         parts.append('<p class="empty-hint">payload 未提供 summary，报告缺少概览级结论，请补齐后重新生成。</p>')
@@ -900,7 +938,7 @@ def render_overview(payload: Dict[str, Any], strict: bool) -> str:
     parts.append(
         f'<div class="card suff {grade_class}"><h3>证据整体充分度</h3>'
         f'<p class="grade-line"><span class="grade-badge">{esc(grade)}</span></p>'
-        f'<p class="note">{esc(note) if note else "未提供评级说明。"}</p></div>'
+        f'<p class="note">{rich(note) if note else "未提供评级说明。"}</p></div>'
     )
 
     parts.append('<div class="card"><h3>研究流程追溯图</h3>')
@@ -1087,7 +1125,7 @@ def render_findings(payload: Dict[str, Any]) -> str:
                     parts.append(f'<span class="finding-id">{esc(fid)}</span>')
                 parts.append(f'<span class="conf {conf_class}">可信度：{esc(confidence)}</span>')
                 parts.append("</div>")
-                parts.append(f'<p class="claim">{esc(finding.get("claim"))}</p>')
+                parts.append(f'<p class="claim">{rich(finding.get("claim"))}</p>')
                 parts.append('<div class="finding-ev">证据：')
                 parts.append(render_evidence_links(
                     as_list(finding.get("evidence")),
@@ -1133,7 +1171,7 @@ def render_disputes(payload: Dict[str, Any]) -> str:
         for label, side, css in (("正方", pro, "side-pro"), ("反方", con, "side-con")):
             parts.append(f'<div class="side {css}"><h4>{esc(label)}</h4>')
             claim = as_str(side.get("claim")).strip()
-            parts.append(f'<p class="claim">{esc(claim) if claim else "（payload 未提供该侧主张，--strict 下会报错）"}</p>')
+            parts.append(f'<p class="claim">{rich(claim) if claim else "（payload 未提供该侧主张，--strict 下会报错）"}</p>')
             parts.append('<div class="finding-ev">证据：')
             parts.append(render_evidence_links(as_list(side.get("evidence")), "（无证据）"))
             parts.append("</div></div>")
@@ -1141,7 +1179,7 @@ def render_disputes(payload: Dict[str, Any]) -> str:
         boundary = as_str(dispute.get("boundary")).strip()
         parts.append(
             f'<div class="boundary"><strong>适用边界：</strong>'
-            f'{esc(boundary) if boundary else "（未提供适用边界，读者需自行判断该争议的适用范围）"}</div>'
+            f'{rich(boundary) if boundary else "（未提供适用边界，读者需自行判断该争议的适用范围）"}</div>'
         )
         parts.append("</div>")
     parts.append("</section>")
@@ -1337,7 +1375,7 @@ def render_evidence(payload: Dict[str, Any]) -> str:
         if tool:
             parts.append(f'<span class="chip chip-tool">工具：{esc(tool)}</span>')
         parts.append("</header>")
-        parts.append(f'<p class="ev-content">{esc(item.get("content"))}</p>')
+        parts.append(f'<p class="ev-content">{rich(item.get("content"))}</p>')
         if quote:
             parts.append(f'<blockquote class="ev-quote">{esc(quote)}</blockquote>')
         parts.append('<footer class="ev-foot">')
@@ -1440,7 +1478,7 @@ def render_appendix(payload: Dict[str, Any]) -> str:
         parts.append(f'<div class="card"><h3>{esc(title) if title else "未命名附录"}</h3>')
         for paragraph in body.split("\n"):
             if paragraph.strip():
-                parts.append(f"<p>{esc(paragraph.strip())}</p>")
+                parts.append(f"<p>{linkify(rich(paragraph.strip()))}</p>")
         if not body:
             parts.append('<p class="empty-hint">该附录小节未提供正文。</p>')
         parts.append("</div>")

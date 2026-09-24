@@ -1,6 +1,6 @@
 {
   "skill": "deep-research-collab",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "触发评测用例集：判定本技能是否被正确路由。should-trigger 必须触发；should-not-trigger 必须不触发（并给出正确替代）；near-miss 需要一句话澄清后判定；ambiguous 需要先问一个锁定变量的问题。",
   "routing_boundary": {
     "use_this_skill": "需要三级搜索协同 + 证据 ID 体系 + 缺口回退 + 双交付物（文档版 + HTML 交互式）",

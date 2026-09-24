@@ -104,9 +104,13 @@ def check_docs_consistency(quiet: bool) -> list[tuple[str, bool, str]]:
           "仍出现 证据库.json" if "证据库.json" in blob else "一致")
 
     # 4) EV 字段数表述
-    check("EV 字段数表述为「十字段」（无「九字段」）",
-          "九字段" not in blob and "九个字段" not in blob,
-          "仍出现「九字段/九个字段」" if ("九字段" in blob or "九个字段" in blob) else "一致")
+    # 覆盖中文与阿拉伯两种数字写法：只拦「九字段」会漏掉「9 个字段」
+    # （2026-09-24 实证：loop-run-record-template.md 写作「9 个字段齐全」逃过原判据，
+    #   而实测 EV 为十字段，属直接数值错误）。
+    bad_field_count = re.findall(r"九\s*个?\s*字段|9\s*个?\s*字段", blob)
+    check("EV 字段数表述为「十字段」（中/阿数字写法均无「9 个字段」）",
+          not bad_field_count,
+          "仍出现：%s" % "、".join(sorted(set(bad_field_count))) if bad_field_count else "一致")
 
     # 5) 无人值守分支必须存在（否则阶段 0.1 在无人环境会阻塞且不留产物）
     has_unattended = "无人值守" in text[ROOT / "SKILL.md"]
