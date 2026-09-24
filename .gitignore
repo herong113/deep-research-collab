@@ -1,0 +1,19 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 运行产物（生成器只应写 --out 指定的路径；这些是误留的兜底）
+/report.html
+/tmp/
+*.tmp
+
+# 编辑器
+.vscode/
+.idea/

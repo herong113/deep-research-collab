@@ -1,0 +1,116 @@
+{
+  "version": "0.1.0",
+  "skill": "deep-research-collab",
+  "purpose": "阶段 0 需求对齐的问题库：用宿主原生选择面一轮问 3-5 题，每题 2-4 个选项，每个选项写清后果与它设置了哪些字段。",
+  "usage": {
+    "host_tools": {
+      "dsh": "ask_user_question",
+      "codex": "request_user_input",
+      "claude_code": "AskUserQuestion",
+      "fallback": "对话内编号选项卡：列出选项后必须停下等待，状态记 unconfirmed，不得进入阶段 1"
+    },
+    "rules": [
+      "一轮最多 5 题，每题最多 4 个选项；超出说明边界未收敛，先砍范围",
+      "每个选项必须能用一句话说清后果（depth/cost/deliverable 三者至少影响其一）",
+      "最后一题允许自由文本补充（必答问题）",
+      "用户回答'你定'时取 default_option，并在对齐卡记入'取默认值的字段'",
+      "禁止替用户选择；没有原生选择工具时状态只能是 unconfirmed"
+    ]
+  },
+  "questions": [
+    {
+      "id": "depth",
+      "header": "研究深度",
+      "question": "这次研究的决策用途是什么？据此决定检索投入档位。",
+      "sets": "深度档位 + 成本预算 + 证据标准基线",
+      "options": [
+        { "label": "A 快扫：只要轮廓，1 轮检索", "description": "约 2-3 次检索，出轮廓与候选来源，不做交叉验证与反证", "sets": { "深度档位": "A", "证据标准": "宽松", "成本预算": "秘塔 <= 2 次；Tavily <= 2 次" } },
+        { "label": "B 标准：三级搜索 + 证据库（推荐）", "description": "三级协同 + 每条结论 >=2 独立来源，含缺口回退", "sets": { "深度档位": "B", "证据标准": "严格", "成本预算": "秘塔 <= 4 次；Tavily <= 3 次" } },
+        { "label": "C 深度：含反证回退与争议并列", "description": "在标准档基础上强制正反证据并列、争议矩阵与案例时间线", "sets": { "深度档位": "C", "证据标准": "严格", "成本预算": "秘塔 <= 8 次；Tavily <= 5 次" } }
+      ],
+      "default_option": "B 标准：三级搜索 + 证据库（推荐）",
+      "skip_if": "用户已明确说明决策用途与深度（例如'要能直接上会决策'）"
+    },
+    {
+      "id": "deliverable",
+      "header": "交付形态",
+      "question": "你希望拿到什么形态的交付物？",
+      "sets": "deliverable_target + 是否生成 HTML/图表",
+      "options": [
+        { "label": "双交付：文档版 + HTML 交互版（推荐）", "description": "归档与演示都覆盖，图表与证据链路可点击", "sets": { "deliverable_target": "双交付（文档版 + HTML 演示版）" } },
+        { "label": "只要文档版 Markdown", "description": "适合归档、二次加工，不做交互式报告", "sets": { "deliverable_target": "文档版" } },
+        { "label": "只要 HTML 演示版", "description": "适合开会演示与跨端分享", "sets": { "deliverable_target": "HTML 演示版" } },
+        { "label": "一页决策简报", "description": "只要结论、条件与证据编号，不写完整报告", "sets": { "deliverable_target": "一页决策简报" } }
+      ],
+      "default_option": "双交付：文档版 + HTML 交互版（推荐）",
+      "skip_if": "用户已在请求里说明交付形态"
+    },
+    {
+      "id": "time_window",
+      "header": "时间窗",
+      "question": "证据的时间窗取多长？",
+      "sets": "时间窗 + 检索式时间限定符",
+      "options": [
+        { "label": "近 6 个月", "description": "只看最新动态，历史背景不作证据", "sets": { "时间窗": "近 6 个月" } },
+        { "label": "近 18 个月（推荐）", "description": "覆盖一个完整变化周期，兼顾时效与纵深", "sets": { "时间窗": "近 18 个月" } },
+        { "label": "近 3 年", "description": "适合需要趋势与结构性变化的议题", "sets": { "时间窗": "近 3 年" } },
+        { "label": "不限", "description": "允许引用历史资料，但必须标注时间", "sets": { "时间窗": "不限" } }
+      ],
+      "default_option": "近 18 个月（推荐）",
+      "skip_if": "议题本身自带明确时间范围（如'2026 年的政策'）"
+    },
+    {
+      "id": "scope_mode",
+      "header": "范围收敛",
+      "question": "研究范围怎么定？",
+      "sets": "必答问题 + scope.in/out + 是否先出候选框架",
+      "options": [
+        { "label": "你先给候选框架，我确认（推荐）", "description": "研究方先给 3-6 个必答问题与边界草案，用户增删后开跑", "sets": { "范围收敛方式": "研究方先给候选框架再确认" } },
+        { "label": "我直接给必答问题", "description": "用户提供问题清单，研究方只执行不扩张", "sets": { "范围收敛方式": "用户给必答问题" } },
+        { "label": "只做我圈定的子问题", "description": "范围最小，其余一律记为本轮不做", "sets": { "范围收敛方式": "只做用户圈定的子问题" } }
+      ],
+      "default_option": "你先给候选框架，我确认（推荐）",
+      "skip_if": "用户已给出明确的问题清单"
+    },
+    {
+      "id": "evidence_standard",
+      "header": "证据标准",
+      "question": "结论的证据门槛定在哪一档？",
+      "sets": "证据标准 + 可接受来源 + 拒收来源",
+      "options": [
+        { "label": "严格：>=2 独立来源 + 原文片段（推荐）", "description": "达不到就写成缺口或待验证，不得下结论", "sets": { "证据标准": "严格（每条结论 >=2 独立来源 + 原文片段 + 可访问链接）" } },
+        { "label": "标准：1 个权威来源 + 原文片段", "description": "速度快，但结论必须标注来源数量", "sets": { "证据标准": "标准（1 个权威来源 + 原文片段）" } },
+        { "label": "宽松：允许单一来源", "description": "仅用于快扫档；所有结论必须标'单一来源'", "sets": { "证据标准": "宽松（允许单一来源，必须标注）" } }
+      ],
+      "default_option": "严格：>=2 独立来源 + 原文片段（推荐）",
+      "skip_if": "深度档位已选 A 快扫"
+    },
+    {
+      "id": "must_answer",
+      "header": "必答问题",
+      "question": "有没有必须被回答的问题？（自由文本，最多 5 条，按优先级排序；没有就回'你定'）",
+      "sets": "必答问题 + 本轮不做",
+      "options": [
+        { "label": "你定（用候选框架里的问题）", "description": "采纳研究方在候选框架中提出的必答问题", "sets": { "必答问题": "由研究方候选框架提供" } }
+      ],
+      "default_option": "你定（用候选框架里的问题）",
+      "skip_if": "范围收敛方式为'用户给必答问题'且用户已提供清单"
+    }
+  ],
+  "defaults_if_no_answer": {
+    "audience": "unspecified（报告首屏声明受众未指定）",
+    "stakeholder_view": "general",
+    "deliverable_target": "双交付（文档版 + HTML 演示版）",
+    "时间窗": "近 18 个月",
+    "深度档位": "B",
+    "证据标准": "严格（每条结论 >=2 独立来源 + 原文片段 + 可访问链接）",
+    "成本预算": "秘塔 <= 4 次检索（约 12 积分）；Tavily <= 3 次",
+    "本轮不做": "必须由研究方列出至少 3 项并请用户确认"
+  },
+  "gate": {
+    "rule": "对齐卡状态为 unconfirmed，或缺少 research_domain / 决策用途 / 必答问题 任一，或必答问题为空或写成'全面了解该领域'，均不得进入阶段 1；不得以'先搜两条看看'绕过。",
+    "status_values": ["aligned", "defaulted", "unconfirmed"],
+    "on_status_defaulted": "在报告首屏与运行记录 Intent Core 段各写一句取默认值的说明。",
+    "on_status_unconfirmed": "停下等待用户；已产出草稿必须标注'未对齐，仅供预览'。"
+  }
+}

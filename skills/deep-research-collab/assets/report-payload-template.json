@@ -1,0 +1,21 @@
+{
+  "topic": "研究主题",
+  "subtitle": "副标题",
+  "audience": "读者与用途（变量）",
+  "prepared_at": "2026-01-01",
+  "scope": { "in": ["纳入范围"], "out": ["排除范围"] },
+  "summary": ["核心结论摘要"],
+  "evidence_sufficiency": { "grade": "充分", "note": "理由" },
+  "sources_stats": {
+    "by_layer": [ { "layer": "一级广度发现", "tools": ["tvly search", "metaso_web_search"], "count": 12 } ],
+    "by_type": [ { "name": "行业报告", "count": 5 } ]
+  },
+  "process_log": [ { "stage": "阶段1 广度候选检索", "started": "2026-01-01", "ended": "2026-01-01", "rollbacks": 0, "notes": "备注" } ],
+  "mindmap": { "name": "领域认知地图", "children": [ { "name": "分支", "evidence": ["EV-001"], "children": [] } ] },
+  "findings": [ { "id": "F-1", "module": "模块名", "claim": "结论", "evidence": ["EV-001", "EV-002"], "confidence": "高" } ],
+  "charts": [ { "id": "C-1", "kind": "bar", "title": "图表标题", "unit": "单位", "evidence": ["EV-007"], "categories": ["A", "B"], "series": [ { "name": "系列名", "values": [1, 2] } ] } ],
+  "disputes": [ { "point": "争议点", "pro": { "claim": "正方", "evidence": ["EV-002"] }, "con": { "claim": "反方", "evidence": ["EV-005"] }, "boundary": "适用边界" } ],
+  "cases": [ { "name": "案例", "type": "成功", "timeline": [ { "date": "2026-01", "event": "事件" } ], "factors": ["因素"], "replicability": "可复制性", "evidence": ["EV-003"] } ],
+  "evidence": [ { "id": "EV-001", "content": "信息内容", "type": "数据", "credibility": "高", "quote": "原文片段", "source_title": "来源标题", "url": "https://example.com/source", "retrieved_at": "2026-01-01", "layer": "一级", "tool": "metaso_web_search" } ],
+  "appendix": [ { "title": "研究流程记录", "body": "正文" } ]
+}

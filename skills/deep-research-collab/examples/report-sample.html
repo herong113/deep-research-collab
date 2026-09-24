@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 编程助手的市场格局与真实采用率 · 证据导向型深度调研报告</title>
+<meta name="description" content="三级检索协同 + 证据 ID 体系的端到端真实报告（全部来源可点击溯源）">
+<meta name="dsh-payload-digest" content="8e20ef85">
+<style>
+:root {
+  --ink: #1f2937;
+  --ink-soft: #4b5563;
+  --muted: #6b7280;
+  --line: #dfe5ec;
+  --line-soft: #eef2f7;
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --blue: #1f5fa9;
+  --blue-soft: #eaf1fa;
+  --amber: #b45309;
+  --amber-soft: #fff7ed;
+  --green: #1c7a52;
+  --red: #a83232;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
+               "Noto Sans CJK SC", "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+}
+a { color: var(--blue); text-decoration: none; word-break: break-all; }
+a:hover { text-decoration: underline; }
+
+/* 侧边导航 */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 248px;
+  background: var(--panel); border-right: 1px solid var(--line);
+  padding: 22px 18px; overflow-y: auto; z-index: 30;
+}
+.sidebar .brand { font-size: 15px; font-weight: 700; color: var(--blue); letter-spacing: .4px; }
+.sidebar .brand-sub { font-size: 12px; color: var(--muted); margin: 4px 0 18px; line-height: 1.5; }
+.sidebar nav ol { list-style: none; margin: 0; padding: 0; counter-reset: navitem; }
+.sidebar nav li { margin: 2px 0; }
+.sidebar nav a {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 7px 10px; border-radius: 5px; color: var(--ink-soft); font-size: 13.5px;
+  border-left: 3px solid transparent;
+}
+.sidebar nav a:hover { background: var(--line-soft); text-decoration: none; }
+.sidebar nav a.active { background: var(--blue-soft); color: var(--blue); border-left-color: var(--blue); font-weight: 600; }
+.sidebar nav a .nav-num { color: var(--muted); font-size: 12px; min-width: 14px; }
+.sidebar .sidebar-foot { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line-soft); font-size: 11.5px; color: var(--muted); }
+.sidebar .digest { font-family: Consolas, "Courier New", monospace; color: var(--ink-soft); }
+
+/* 顶部栏 */
+.topbar {
+  position: fixed; top: 0; left: 248px; right: 0; height: 58px;
+  background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 14px; padding: 0 26px; z-index: 25;
+}
+.topbar .doc-title { font-size: 14px; font-weight: 600; color: var(--ink); flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-wrap { position: relative; }
+.search-wrap input {
+  width: 300px; padding: 7px 12px 7px 32px; border: 1px solid var(--line);
+  border-radius: 5px; font-size: 13.5px; color: var(--ink); background: #fff;
+}
+.search-wrap input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+.search-wrap::before {
+  content: "\1F50D"; position: absolute; left: 10px; top: 6px; font-size: 12px; color: var(--muted); opacity: .65;
+}
+.search-hits { font-size: 12px; color: var(--muted); min-width: 92px; }
+
+/* 主体 */
+.main { margin-left: 248px; padding: 84px 34px 72px; max-width: 1200px; }
+.module { margin-bottom: 34px; }
+.sec-title {
+  font-size: 20px; margin: 0 0 16px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--line); scroll-margin-top: 74px;
+}
+.sec-num {
+  display: inline-block; width: 24px; height: 24px; margin-right: 10px; border-radius: 4px;
+  background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; text-align: center; line-height: 24px;
+}
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 18px 20px; margin-bottom: 16px;
+}
+.card h3 { margin: 0 0 12px; font-size: 15.5px; }
+.card h4 { margin: 0 0 8px; font-size: 13.5px; color: var(--ink-soft); }
+.hint { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
+.hint.warn { color: var(--amber); background: var(--amber-soft); border-radius: 4px; padding: 8px 12px; }
+.empty-hint { font-size: 13px; color: var(--amber); background: var(--amber-soft);
+  border-left: 3px solid #f0b37e; padding: 8px 12px; border-radius: 3px; margin: 8px 0; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.meta-table table { width: 100%; border-collapse: collapse; }
+.meta-table th { width: 168px; text-align: left; font-weight: 600; color: var(--ink-soft);
+  padding: 7px 12px 7px 0; vertical-align: top; font-size: 13.5px; }
+.meta-table td { padding: 7px 0; }
+.scope-in { border-top: 3px solid var(--blue); }
+.scope-out { border-top: 3px solid var(--muted); }
+.summary-list { margin: 0; padding-left: 22px; }
+.summary-list li { margin-bottom: 8px; }
+.suff .grade-badge { display: inline-block; padding: 4px 14px; border-radius: 14px;
+  font-weight: 700; font-size: 14px; }
+.grade-high .grade-badge { background: #e6f4ec; color: var(--green); }
+.grade-mid .grade-badge { background: var(--blue-soft); color: var(--blue); }
+.grade-low .grade-badge { background: var(--amber-soft); color: var(--amber); }
+.suff .note { font-size: 13.5px; color: var(--ink-soft); margin: 10px 0 0; }
+
+/* 证据标签 */
+.ev-tags { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.ev-tag {
+  font-family: Consolas, "Courier New", monospace; font-size: 12px;
+  color: var(--blue); background: var(--blue-soft); border: 1px solid #c9dcf2;
+  border-radius: 4px; padding: 1px 7px; cursor: pointer;
+}
+.ev-tag:hover { background: #dbe9f9; }
+.ev-empty { font-size: 12px; color: var(--amber); }
+
+/* 图表 */
+.chart-card { margin: 0 0 22px; padding: 14px 16px 10px; border: 1px solid var(--line-soft);
+  border-radius: 6px; background: #fcfdff; }
+.chart-card figcaption { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.chart-id { font-family: Consolas, monospace; font-size: 11.5px; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; margin-right: 8px; }
+.chart-unit { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 8px; }
+.chart-foot { font-size: 12.5px; color: var(--muted); border-top: 1px dashed var(--line);
+  padding-top: 8px; margin-top: 4px; }
+.chart-svg, .flow-svg, .layer-svg, .timeline-svg { display: block; width: 100%; height: auto; }
+
+/* 发现 */
+.finding-group .count-badge { font-size: 11.5px; color: var(--muted); font-weight: 400; margin-left: 8px; }
+.finding-list { list-style: none; margin: 0; padding: 0; }
+.finding { border-top: 1px solid var(--line-soft); padding: 12px 0; }
+.finding:first-child { border-top: none; padding-top: 4px; }
+.finding-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.finding-id { font-family: Consolas, monospace; font-size: 12px; color: var(--muted); }
+.conf { font-size: 11.5px; padding: 1px 8px; border-radius: 10px; }
+.conf-high { background: #e6f4ec; color: var(--green); }
+.conf-mid { background: var(--blue-soft); color: var(--blue); }
+.conf-low { background: var(--amber-soft); color: var(--amber); }
+.claim { margin: 4px 0 6px; }
+.finding-ev { font-size: 12.5px; color: var(--muted); }
+
+/* 争议 */
+.matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 10px 0 12px; }
+@media (max-width: 900px) { .matrix { grid-template-columns: 1fr; } }
+.side { border-radius: 5px; padding: 12px 14px; border: 1px solid var(--line); }
+.side-pro { background: #f4f9f6; border-left: 4px solid var(--green); }
+.side-con { background: #fdf6f6; border-left: 4px solid var(--red); }
+.side h4 { margin: 0 0 6px; }
+.disp-num { font-size: 12px; color: var(--muted); margin-right: 10px; font-weight: 400; }
+.boundary { font-size: 13px; color: var(--ink-soft); background: var(--line-soft);
+  border-radius: 4px; padding: 8px 12px; }
+
+/* 案例 */
+.case-success { border-top: 3px solid var(--green); }
+.case-fail { border-top: 3px solid var(--red); }
+.case-other { border-top: 3px solid var(--muted); }
+.case-type { font-size: 12px; padding: 1px 9px; border-radius: 10px; margin-right: 10px;
+  background: var(--line-soft); color: var(--ink-soft); font-weight: 400; }
+.case-timeline { margin: 8px 0 14px; overflow-x: auto; }
+.case-block { border: 1px solid var(--line-soft); border-radius: 5px; padding: 12px 14px; }
+.case-block ul { margin: 0; padding-left: 20px; }
+
+/* 证据库 */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+.filter { font-size: 13px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; }
+.filter select { padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px;
+  font-size: 13px; background: #fff; color: var(--ink); }
+.btn { padding: 5px 12px; border: 1px solid var(--line); background: #fff; border-radius: 4px;
+  font-size: 13px; color: var(--ink-soft); cursor: pointer; }
+.btn:hover { background: var(--line-soft); }
+.filter-count { font-size: 12.5px; color: var(--muted); margin-left: auto; }
+.evidence-list { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.evidence-card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 14px 16px; scroll-margin-top: 74px; }
+.evidence-card.ev-hidden { display: none; }
+.evidence-card.ev-hit-term { border-color: #f0b37e; box-shadow: 0 0 0 3px var(--amber-soft); }
+.evidence-card.ev-flash { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+.ev-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.ev-id { font-family: Consolas, monospace; font-weight: 700; color: var(--blue); font-size: 13px; }
+.chip { font-size: 11.5px; padding: 1px 8px; border-radius: 10px; background: var(--line-soft); color: var(--ink-soft); }
+.cred-high { background: #e6f4ec; color: var(--green); }
+.cred-mid { background: var(--blue-soft); color: var(--blue); }
+.cred-low { background: var(--amber-soft); color: var(--amber); }
+.ev-content { margin: 0 0 8px; }
+.ev-quote { margin: 0 0 10px; padding: 8px 14px; border-left: 3px solid var(--blue);
+  background: #f8fbff; color: #23303f; font-size: 14px; }
+.ev-foot { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12.5px; color: var(--muted);
+  border-top: 1px dashed var(--line); padding-top: 8px; }
+mark.hit { background: #fff2bf; color: inherit; padding: 0 2px; border-radius: 2px; }
+.hit-section { display: none; font-size: 12px; color: var(--amber); margin-top: 4px; }
+.hit-section.show { display: block; }
+
+/* 表格 */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th, .data-table td { border: 1px solid var(--line); padding: 7px 10px; text-align: left;
+  vertical-align: top; }
+.data-table th { background: #f7f9fc; font-weight: 600; color: var(--ink-soft); }
+.data-table td.num { text-align: right; font-family: Consolas, monospace; }
+.nowrap { white-space: nowrap; }
+
+/* 页脚 */
+.doc-foot { margin-left: 248px; padding: 22px 34px 40px; font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--line); }
+
+/* 移动端断点：≤900px 取消固定侧栏与固定顶栏，正文不再让出 248px。
+   交付物是「能转发、能在手机上看」的单文件报告——没有这一档，真实 390px 视口
+   （clientWidth 375）下正文只剩 375−248=127px，文字竖排碎裂。
+   位置必须在样式表**末尾**（所有组件规则之后）：早于 .doc-foot/.data-table 的定义
+   会被同特异性的后置规则盖掉（实测：放在 .main 后面时 .doc-foot 仍留 248px，
+   整页横向溢出 37px）。 */
+@media (max-width: 900px) {
+  .sidebar {
+    position: static; width: auto; height: auto; bottom: auto;
+    border-right: 0; border-bottom: 1px solid var(--line);
+    padding: 16px 18px 12px; max-height: none; overflow: visible;
+  }
+  .sidebar .brand-sub { margin: 4px 0 12px; }
+  .sidebar nav ol { columns: 2; column-gap: 16px; }
+  .sidebar nav a { padding: 6px 8px; font-size: 13px; }
+  .sidebar .sidebar-foot { margin-top: 14px; padding-top: 10px; }
+  .topbar {
+    position: static; left: auto; right: auto; height: auto;
+    flex-wrap: wrap; padding: 10px 18px; gap: 8px;
+  }
+  .topbar .doc-title { flex: 1 0 100%; white-space: normal; }
+  .search-wrap { flex: 1 0 100%; }
+  .search-wrap input { width: 100%; }
+  .search-hits { flex: 1 1 auto; min-width: 0; }
+  .main { margin-left: 0; padding: 20px 18px 56px; max-width: none; }
+  .doc-foot { margin-left: 0; padding: 18px 18px 32px; }
+  .sec-title { scroll-margin-top: 12px; }
+}
+
+/* 窄视口内的宽表：让表格自己横向滚动，而不是把整页撑宽。
+   .data-table 的内容最小宽度实测约 620px（阶段名 + .nowrap 时间戳列），
+   在 390px 视口下曾使整页横向溢出 285px。仅作用于 screen——打印走 @media print
+   的独立分页规则，不受 display:block 影响。 */
+@media screen and (max-width: 900px) {
+  .data-table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* 打印：隐藏导航与搜索，保证正文完整进入纸张 */
+@media print {
+  .sidebar, .topbar, .mm-toolbar, .filters, .btn { display: none !important; }
+  .main, .doc-foot { margin-left: 0; padding: 0 8mm; max-width: none; }
+  body { background: #fff; font-size: 11.5pt; }
+  .card, .chart-card, .evidence-card { break-inside: avoid; page-break-inside: avoid; }
+  .sec-title { break-after: avoid; page-break-after: avoid; }
+  a { color: #000; }
+  .evidence-card.ev-hidden { display: block; }
+}
+</style>
+</head>
+<body>
+<aside class="sidebar"><div class="brand">证据导向型深度调研</div><div class="brand-sub">AI 编程助手的市场格局与真实采用率<br>三级检索协同 + 证据 ID 体系的端到端真实报告（全部来源可点击溯源）</div><nav><ol><li><a href="#sec-overview"><span class="nav-num">1</span><span>报告概览</span></a></li><li><a href="#sec-mindmap"><span class="nav-num">2</span><span>领域认知地图</span></a></li><li><a href="#sec-sources"><span class="nav-num">3</span><span>三级搜索来源溯源</span></a></li><li><a href="#sec-findings"><span class="nav-num">4</span><span>核心研究发现</span></a></li><li><a href="#sec-disputes"><span class="nav-num">5</span><span>争议与反证分析</span></a></li><li><a href="#sec-cases"><span class="nav-num">6</span><span>典型案例库</span></a></li><li><a href="#sec-evidence"><span class="nav-num">7</span><span>完整证据库</span></a></li><li><a href="#sec-appendix"><span class="nav-num">8</span><span>附录</span></a></li></ol></nav><div class="sidebar-foot">deep-research-collab · 单文件离线报告<br>payload 指纹 <span class="digest">8e20ef85</span><br>本页不联网、不引用任何外部资源</div></aside>
+<header class="topbar"><span class="doc-title">AI 编程助手的市场格局与真实采用率</span><span class="search-wrap"><input id="global-search" type="search" placeholder="全文检索结论 / 证据（回车定位）" autocomplete="off"></span><span class="search-hits"></span><button type="button" class="btn" id="print-btn" onclick="window.print()">打印 / 导出 PDF</button></header>
+<main class="main">
+<div class="hit-section"></div>
+<section class="module"><h2 id="sec-overview" class="sec-title"><span class="sec-num">1</span>报告概览</h2><div class="meta-table"><table><tbody><tr><th>主题</th><td>AI 编程助手的市场格局与真实采用率</td></tr><tr><th>副标题</th><td>三级检索协同 + 证据 ID 体系的端到端真实报告（全部来源可点击溯源）</td></tr><tr><th>产出目标 / 受众</th><td>需要评估 AI 编程工具采购与自建可行性的技术决策者、研发效能负责人</td></tr><tr><th>编制时间</th><td>2026-09-24T19:30:00+08:00</td></tr></tbody></table></div><div class="grid-2"><div class="card scope-in"><h3>纳入范围</h3><ul><li>面向个人开发者与企业团队的通用 AI 编程助手（补全、对话、Agent 式改码）</li><li>公开可查的采用率口径、厂商定价与部署形态、企业合规准入条件</li><li>2024-01 至 2026-09 的公开信息窗口</li></ul></div><div class="card scope-out"><h3>排除范围</h3><ul><li>垂直领域专用模型训练与算力基建成本测算</li><li>未公开的私有部署合同条款与折扣谈判细节</li><li>纯学术基准（如 HumanEval）的模型排行榜复现实验</li></ul></div></div><div class="card"><h3>核心结论摘要</h3><ol class="summary-list"><li>2024–2026 年间市场呈现三条路线并存：通用大模型厂商做跨终端订阅制 agent、IDE 原生厂商做企业合规与深度集成、开源与自托管提供「代码不出网」的底线方案；在中国市场，前两条路线同时叠加私有化/信创形态。</li><li>采用率已进入 62%–85% 的高位，但三个独立口径互不相同（「使用或计划使用」84%、「定期使用」85%、「依赖至少一个助手」62%），采购评估不应直接引用任何单一百分比。</li><li>「AI 是否提效」必须按场景分档回答：Google 企业级任务 RCT 约 +21%，而 METR 在资深开发者熟悉的大型仓库上测得 −19%；且 METR 2026 年自认其后续实验数据因选择偏差不可靠。</li><li>个体编码提速未转化为组织交付改善：DORA 发现 AI 采纳增加 25% 伴随交付吞吐 −1.5%、稳定性 −7.2%，采购 ROI 应在交付链路而非编辑器内核算。</li></ol></div><div class="card suff grade-mid"><h3>证据整体充分度</h3><p class="grade-line"><span class="grade-badge">中等偏上（B）</span></p><p class="note">市场格局、采用率口径与厂商定价类事实证据充分且可交叉（各主题均 ≥2 个独立责任主体）；但效能收益的量化证据存在方向性冲突——两个严格 RCT 结论相反，且其中之一（METR）已公开自我更正测量失效，因此本报告不给出任何单一提效百分比。另有 8 项证据经尝试未取得（含 tvly 配额耗尽、微信公众号原文仅得聚合页、多份行业报告 403/验证码拦截），已在附录逐条列明，未以推断替代。</p></div><div class="card"><h3>研究流程追溯图</h3><p class="hint">流程由 payload 的 process_log 生成；节点标注回退次数，回退次数 &gt; 0 的阶段以暖色标识。</p><svg class="flow-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1002 350" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker></defs><title>研究流程追溯图</title><rect x="30" y="20" width="210" height="108" rx="6" fill="#fff7ed" stroke="#f0b37e" stroke-width="1.5"/><text x="42" y="44" font-size="12.5" font-weight="600" fill="#1f2937">S1 广度发现（一级检索）<title>S1 广度发现（一级检索）</title></text><text x="42" y="66" font-size="10.5" fill="#6b7280">起 2026-09-24T18:40:00+0…</text><text x="42" y="82" font-size="10.5" fill="#6b7280">止 2026-09-24T19:00:00+0…</text><text x="42" y="104" font-size="11" font-weight="600" fill="#b45309">回退 1 次</text><text x="228" y="104" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>计划的双引擎中 tavily 全程不可用（配额耗尽），一级检索改由 web_search 与秘塔检索承担；检索词覆盖市场格局、采用率、采购合规、效能证据四条主线。</title></text><line x1="244" y1="74" x2="270" y2="74" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="274" y="20" width="210" height="108" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/><text x="286" y="44" font-size="12.5" font-weight="600" fill="#1f2937">S2 深度核对（二级取全文）<title>S2 深度核对（二级取全文）</title></text><text x="286" y="66" font-size="10.5" fill="#6b7280">起 2026-09-24T19:00:00+0…</text><text x="286" y="82" font-size="10.5" fill="#6b7280">止 2026-09-24T19:20:00+0…</text><text x="286" y="104" font-size="11" font-weight="600" fill="#64748b">回退 0 次</text><text x="472" y="104" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>用 web_fetch 与秘塔 reader 逐页取正文并抽取逐字引文；13 条证据达到二级（读到正文），1 条停留一级。</title></text><line x1="488" y1="74" x2="514" y2="74" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="518" y="20" width="210" height="108" rx="6" fill="#fff7ed" stroke="#f0b37e" stroke-width="1.5"/><text x="530" y="44" font-size="12.5" font-weight="600" fill="#1f2937">S3 缺口补充与反证检索（三级）<title>S3 缺口补充与反证检索（三级）</title></text><text x="530" y="66" font-size="10.5" fill="#6b7280">起 2026-09-24T19:20:00+0…</text><text x="530" y="82" font-size="10.5" fill="#6b7280">止 2026-09-24T19:28:00+0…</text><text x="530" y="104" font-size="11" font-weight="600" fill="#b45309">回退 2 次</text><text x="716" y="104" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>第一次回退：效能主题首轮只召回厂商正面材料，追加「RCT / randomized controlled trial / 减速」检索词后取得 METR 与 DORA 两份反向证据。第二次回退：尝试取微信公众号原文未果（秘塔仅返回聚合页），改用中文厂商官网与中文媒体作为中文来源。</title></text><line x1="732" y1="74" x2="758" y2="74" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="762" y="20" width="210" height="108" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/><text x="774" y="44" font-size="12.5" font-weight="600" fill="#1f2937">S4 认知地图与结论归并<title>S4 认知地图与结论归并</title></text><text x="774" y="66" font-size="10.5" fill="#6b7280">起 2026-09-24T19:28:00+0…</text><text x="774" y="82" font-size="10.5" fill="#6b7280">止 2026-09-24T19:32:00+0…</text><text x="774" y="104" font-size="11" font-weight="600" fill="#64748b">回退 0 次</text><text x="960" y="104" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>9 条结论全部绑定证据 ID；每个核心结论复核独立来源数 ≥2，未达标的一条（采购与真实渗透折损）降级为「待验证」。</title></text><path d="M 972 74 L 989 74 L 989 256 L 24 256" fill="none" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="30" y="202" width="210" height="108" rx="6" fill="#fff7ed" stroke="#f0b37e" stroke-width="1.5"/><text x="42" y="226" font-size="12.5" font-weight="600" fill="#1f2937">S5 双格式输出与一致性校验<title>S5 双格式输出与一致性校验</title></text><text x="42" y="248" font-size="10.5" fill="#6b7280">起 2026-09-24T19:32:00+0…</text><text x="42" y="264" font-size="10.5" fill="#6b7280">止 2026-09-24T19:36:00+0…</text><text x="42" y="286" font-size="11" font-weight="600" fill="#b45309">回退 1 次</text><text x="228" y="286" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>先出文档版，再依 payload 生成单文件离线 HTML；一致性校验发现案例模块缺少真实可核验材料，回退后改为不设案例模块（不以虚构时间线凑数）。</title></text><line x1="244" y1="256" x2="270" y2="256" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="274" y="202" width="210" height="108" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/><text x="286" y="226" font-size="12.5" font-weight="600" fill="#1f2937">S6 证据归档与写回决策<title>S6 证据归档与写回决策</title></text><text x="286" y="248" font-size="10.5" fill="#6b7280">起 2026-09-24T19:36:00+0…</text><text x="286" y="264" font-size="10.5" fill="#6b7280">止 2026-09-24T19:40:00+0…</text><text x="286" y="286" font-size="11" font-weight="600" fill="#64748b">回退 0 次</text><text x="472" y="286" text-anchor="end" font-size="11" fill="#94a3b8">备注&#9432;<title>Writeback = proposal：本轮浮现两条可复用规则（① 公众号定向检索不可用时如何降级并在附录声明；② 主检索引擎配额耗尽时的回退口径），暂只提议不动手，待用户确认后写入 references/。</title></text></svg></div><p class="hint">本次以 --strict 模式生成：校验未通过时构建会以非零退出码结束，因此本报告对应的 payload 已通过全部校验项。</p></section>
+<section class="module"><h2 id="sec-mindmap" class="sec-title"><span class="sec-num">2</span>领域认知地图</h2><p class="hint">点击节点前的箭头可展开 / 折叠分支；节点右侧的证据标签可跳转到对应证据条目。</p><div class="mm-toolbar"><button type="button" class="btn" data-mm-expand="all">全部展开</button><button type="button" class="btn" data-mm-expand="none">全部折叠</button></div><div class="mindmap card"><ul class="mm-root"><li class="mm-node mm-depth-0"><div class="mm-label"><button type="button" class="mm-toggle" aria-expanded="true" data-mm-toggle="mm-0" title="展开 / 折叠该分支">▾</button><span class="mm-name" data-mm-name="mm-0">AI 编程助手的市场格局与真实采用率</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div><ul class="mm-children" id="mm-0"><li class="mm-node mm-depth-1"><div class="mm-label"><button type="button" class="mm-toggle" aria-expanded="true" data-mm-toggle="mm-0-0" title="展开 / 折叠该分支">▾</button><span class="mm-name" data-mm-name="mm-0-0">三条交付路线</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-004" title="跳转到证据 EV-004">EV-004</button><button type="button" class="ev-tag" data-ev="EV-005" title="跳转到证据 EV-005">EV-005</button></span></div><ul class="mm-children" id="mm-0-0"><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-0-0">通用大模型厂商：跨终端订阅 agent</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-008" title="跳转到证据 EV-008">EV-008</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-0-1">IDE 原生厂商：企业合规与深度集成</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-004" title="跳转到证据 EV-004">EV-004</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-0-2">开源与自托管：代码不出网</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-005" title="跳转到证据 EV-005">EV-005</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-0-3">中国市场：叠加私有化与信创形态</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-006" title="跳转到证据 EV-006">EV-006</button><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div></li></ul></li><li class="mm-node mm-depth-1"><div class="mm-label"><button type="button" class="mm-toggle" aria-expanded="true" data-mm-toggle="mm-0-1" title="展开 / 折叠该分支">▾</button><span class="mm-name" data-mm-name="mm-0-1">采用率与其口径</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button></span></div><ul class="mm-children" id="mm-0-1"><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-1-0">Stack Overflow：使用或计划使用 84%（n=33,662）</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-1-1">JetBrains：定期使用 85% / 依赖≥1 助手 62%（n=24,534）</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-1-2">GitHub：开源项目 50% 有维护者用 Copilot</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div></li></ul></li><li class="mm-node mm-depth-1"><div class="mm-label"><button type="button" class="mm-toggle" aria-expanded="true" data-mm-toggle="mm-0-2" title="展开 / 折叠该分支">▾</button><span class="mm-name" data-mm-name="mm-0-2">效能证据与其冲突</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button></span></div><ul class="mm-children" id="mm-0-2"><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-2-0">正向：Google 企业 RCT 约 +21%（n=96）</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-2-1">反向：METR RCT 任务耗时 +19%（n=16 / 246 任务）</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-2-2">组织级：DORA 吞吐 −1.5%、稳定性 −7.2%</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-009" title="跳转到证据 EV-009">EV-009</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-2-3">测量本身不可靠：METR 2026 自我更正</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-012" title="跳转到证据 EV-012">EV-012</button></span></div></li></ul></li><li class="mm-node mm-depth-1"><div class="mm-label"><button type="button" class="mm-toggle" aria-expanded="true" data-mm-toggle="mm-0-3" title="展开 / 折叠该分支">▾</button><span class="mm-name" data-mm-name="mm-0-3">采购与合规</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div><ul class="mm-children" id="mm-0-3"><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-3-0">席位制定价与起购门槛</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-3-1">私有化与信创准入门槛</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-006" title="跳转到证据 EV-006">EV-006</button><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div></li><li class="mm-node mm-depth-2"><div class="mm-label"><span class="mm-toggle mm-toggle-leaf">·</span><span class="mm-name" data-mm-name="mm-0-3-2">治理先行反而提升采纳（+451%）</span><span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-010" title="跳转到证据 EV-010">EV-010</button></span></div></li></ul></li></ul></li></ul></div></section>
+<section class="module"><h2 id="sec-sources" class="sec-title"><span class="sec-num">3</span>三级搜索来源溯源</h2><div class="card"><h3>三级搜索协同架构</h3><svg class="layer-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 384" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>三级搜索协同架构图</title><defs><marker id="layer-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker></defs><rect x="30" y="24" width="660" height="66" rx="6" fill="#1f5fa9" opacity="0.10"/><rect x="30" y="24" width="6" height="66" rx="3" fill="#1f5fa9"/><text x="54" y="50" font-size="13.5" font-weight="600" fill="#1f2937">一级（广度发现）</text><text x="54" y="72" font-size="11.5" fill="#4b5563">工具：web_search、mcp__metaso__metaso_web_search</text><text x="666" y="64" text-anchor="end" font-size="18" font-weight="700" fill="#1f5fa9">1<tspan font-size="11" fill="#6b7280" font-weight="400"> 条</tspan></text><line x1="360" y1="90" x2="360" y2="114" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#layer-arrow)"/><rect x="30" y="120" width="660" height="66" rx="6" fill="#3b7dd8" opacity="0.10"/><rect x="30" y="120" width="6" height="66" rx="3" fill="#3b7dd8"/><text x="54" y="146" font-size="13.5" font-weight="600" fill="#1f2937">二级（深度核对）</text><text x="54" y="168" font-size="11.5" fill="#4b5563">工具：web_fetch、mcp__metaso__metaso_web_reader</text><text x="666" y="160" text-anchor="end" font-size="18" font-weight="700" fill="#3b7dd8">13<tspan font-size="11" fill="#6b7280" font-weight="400"> 条</tspan></text><line x1="360" y1="186" x2="360" y2="210" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#layer-arrow)"/><rect x="30" y="216" width="660" height="66" rx="6" fill="#5c9be5" opacity="0.10"/><rect x="30" y="216" width="6" height="66" rx="3" fill="#5c9be5"/><text x="54" y="242" font-size="13.5" font-weight="600" fill="#1f2937">三级（缺口补充）</text><text x="54" y="264" font-size="11.5" fill="#4b5563">工具：web_fetch（缺口/反证补充）</text><text x="666" y="256" text-anchor="end" font-size="18" font-weight="700" fill="#5c9be5">2<tspan font-size="11" fill="#6b7280" font-weight="400"> 条</tspan></text></svg></div><div class="card"><h3>来源类型分布</h3><svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 226" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>来源类型分布</title><text x="208" y="55" text-anchor="end" font-size="12" fill="#374151">第三方研究<title>第三方研究</title></text><rect x="220" y="40" width="410" height="20" fill="#1f5fa9" rx="2"><title>第三方研究：7 条</title></rect><text x="638" y="55" font-size="12" fill="#374151">7 条</text><text x="208" y="89" text-anchor="end" font-size="12" fill="#374151">厂商披露<title>厂商披露</title></text><rect x="220" y="74" width="292.86" height="20" fill="#3b7dd8" rx="2"><title>厂商披露：5 条</title></rect><text x="520.86" y="89" font-size="12" fill="#374151">5 条</text><text x="208" y="123" text-anchor="end" font-size="12" fill="#374151">媒体报道<title>媒体报道</title></text><rect x="220" y="108" width="117.14" height="20" fill="#5c9be5" rx="2"><title>媒体报道：2 条</title></rect><text x="345.14" y="123" font-size="12" fill="#374151">2 条</text><text x="208" y="157" text-anchor="end" font-size="12" fill="#374151">一手数据<title>一手数据</title></text><rect x="220" y="142" width="58.57" height="20" fill="#8fb8e8" rx="2"><title>一手数据：1 条</title></rect><text x="286.57" y="157" font-size="12" fill="#374151">1 条</text><text x="208" y="191" text-anchor="end" font-size="12" fill="#374151">背景信息<title>背景信息</title></text><rect x="220" y="176" width="58.57" height="20" fill="#2f4858" rx="2"><title>背景信息：1 条</title></rect><text x="286.57" y="191" font-size="12" fill="#374151">1 条</text></svg></div></section>
+<section class="module"><h2 id="sec-findings" class="sec-title"><span class="sec-num">4</span>核心研究发现</h2><div class="card finding-group"><h3>市场格局<span class="count-badge">1 条</span></h3><ul class="finding-list"><li class="finding"><div class="finding-head"><span class="finding-id">F-01</span><span class="conf conf-high">可信度：高</span></div><p class="claim">2024-2026 年间三条路线并存且交付形态可清晰区分：通用大模型厂商做跨终端订阅制 agent（Anthropic 等）、IDE 原生厂商做企业合规与 IDE 深度集成（Cursor、GitHub Copilot）、开源自托管提供「代码不出网」的底线方案（Tabby）；在中国市场，通用大模型厂商同时叠加私有化/信创形态（通义灵码、腾讯云 CodeBuddy）。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button><button type="button" class="ev-tag" data-ev="EV-004" title="跳转到证据 EV-004">EV-004</button><button type="button" class="ev-tag" data-ev="EV-005" title="跳转到证据 EV-005">EV-005</button><button type="button" class="ev-tag" data-ev="EV-006" title="跳转到证据 EV-006">EV-006</button><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button><button type="button" class="ev-tag" data-ev="EV-008" title="跳转到证据 EV-008">EV-008</button></span></div></li></ul></div><div class="card finding-group"><h3>采用率与真实渗透<span class="count-badge">3 条</span></h3><ul class="finding-list"><li class="finding"><div class="finding-head"><span class="finding-id">F-02</span><span class="conf conf-high">可信度：高</span></div><p class="claim">主流开发者中 AI 编程工具的采用率已进入 62%–85% 的高位，但三个独立口径互不相同：Stack Overflow「使用或计划使用」84%（n=33,662）、JetBrains「定期使用」85% 且「依赖至少一个编码助手」62%（n=24,534）、GitHub 新开发者首周使用 Copilot 约 80%。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div></li><li class="finding"><div class="finding-head"><span class="finding-id">F-03</span><span class="conf conf-high">可信度：高</span></div><p class="claim">采用率数字对口径高度敏感（同一人群「每日使用 51%」与「依赖至少一个助手 62%」并存），因此采购评估不应直接引用任何单一百分比，必须同时核对样本量、题目措辞与统计对象。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button></span></div></li><li class="finding"><div class="finding-head"><span class="finding-id">F-09</span><span class="conf conf-low">可信度：待验证</span></div><p class="claim">「已采购/已授权」与「真实渗透」之间存在显著折损：企业落地多停在试点与部分铺开阶段，并有实践者报告买单后实际使用率不足 30%（后者证据等级待验证）。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-015" title="跳转到证据 EV-015">EV-015</button><button type="button" class="ev-tag" data-ev="EV-016" title="跳转到证据 EV-016">EV-016</button><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div></li></ul></div><div class="card finding-group"><h3>采购与合规<span class="count-badge">2 条</span></h3><ul class="finding-list"><li class="finding"><div class="finding-head"><span class="finding-id">F-04</span><span class="conf conf-high">可信度：高</span></div><p class="claim">在中国市场，私有化/离线部署与信创适配是进入门槛而非可选项，并且直接体现为席位制成本结构：腾讯云 CodeBuddy 专有云企业版 316 元/人/月、100 坐席起购，SaaS 企业版 198 元/人/月、1 坐席起购；阿里云通义灵码则以「代码不二次训练 + 私有化选项」回应合规诉求。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button><button type="button" class="ev-tag" data-ev="EV-006" title="跳转到证据 EV-006">EV-006</button></span></div></li><li class="finding"><div class="finding-head"><span class="finding-id">F-05</span><span class="conf conf-mid">可信度：中</span></div><p class="claim">治理先行的组织 AI 采纳率显著更高——有明确可接受使用政策的组织采纳率相对高出 451%，说明合规政策不只是阻碍，也是采纳的加速器（该结论与 F-04 的合规门槛并不矛盾：门槛决定能否入场，政策决定入场后能否铺开）。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-010" title="跳转到证据 EV-010">EV-010</button><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div></li></ul></div><div class="card finding-group"><h3>价值证据<span class="count-badge">3 条</span></h3><ul class="finding-list"><li class="finding"><div class="finding-head"><span class="finding-id">F-06</span><span class="conf conf-mid">可信度：中</span></div><p class="claim">两个严格 RCT 给出方向相反的结论：Google 内部 96 名工程师的企业级任务 RCT 显示约 21% 提速，而 METR 对 16 名资深开源开发者在熟悉大型仓库的 RCT 显示 19% 减速；差异与任务可打分性、代码库熟悉度、质量门槛强相关，因此「AI 是否提效」必须按场景分档回答。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button><button type="button" class="ev-tag" data-ev="EV-014" title="跳转到证据 EV-014">EV-014</button></span></div></li><li class="finding"><div class="finding-head"><span class="finding-id">F-07</span><span class="conf conf-mid">可信度：中</span></div><p class="claim">个体编码提速并未转化为组织交付改善：DORA 发现 AI 采纳增加 25% 伴随交付吞吐下降 1.5%、稳定性下降 7.2%，其机制（批量变大、评审变慢）意味着采购 ROI 应在交付链路而非编码环节核算。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-009" title="跳转到证据 EV-009">EV-009</button><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button></span></div></li><li class="finding"><div class="finding-head"><span class="finding-id">F-08</span><span class="conf conf-high">可信度：高</span></div><p class="claim">效应量的测量本身已被证明不可靠：METR 2026 年自我更正称新实验数据因选择偏差「给出的是不可靠信号」，同时自报提速（开发者自认 +20%）与实测（-19%）系统性背离，故任何写进采购合同的百分比收益承诺都缺乏可复现证据支撑。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-012" title="跳转到证据 EV-012">EV-012</button><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button></span></div></li></ul></div><div class="card"><h3>量化图表</h3><p class="hint">图表数据点支持鼠标悬停查看数值；图下证据 ID 可点击跳转到证据库。</p><figure class="chart-card" id="chart-CH-01"><figcaption><span class="chart-id">CH-01</span>AI 编程助手采用率：不同口径与样本下的数字（%）<span class="chart-unit">单位：%</span></figcaption><svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>AI 编程助手采用率：不同口径与样本下的数字（%）</title><line x1="64" y1="24" x2="696" y2="24" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="34" text-anchor="end" font-size="11" fill="#6b7280">100</text><line x1="64" y1="87" x2="696" y2="87" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="91" text-anchor="end" font-size="11" fill="#6b7280">75</text><line x1="64" y1="150" x2="696" y2="150" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="154" text-anchor="end" font-size="11" fill="#6b7280">50</text><line x1="64" y1="213" x2="696" y2="213" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="217" text-anchor="end" font-size="11" fill="#6b7280">25</text><line x1="64" y1="276" x2="696" y2="276" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="274" text-anchor="end" font-size="11" fill="#6b7280">0</text><line x1="64" y1="276" x2="696" y2="276" stroke="#94a3b8" stroke-width="1"/><rect x="113.2" y="64.32" width="28" height="211.68" fill="#1f5fa9" rx="2"><title>Stack Overflow 使用或计划使用 · 占比：84%</title></rect><rect x="239.6" y="61.8" width="28" height="214.2" fill="#1f5fa9" rx="2"><title>JetBrains 定期使用 · 占比：85%</title></rect><rect x="366" y="119.76" width="28" height="156.24" fill="#1f5fa9" rx="2"><title>JetBrains 依赖≥1 助手 · 占比：62%</title></rect><rect x="492.4" y="147.48" width="28" height="128.52" fill="#1f5fa9" rx="2"><title>Stack Overflow 每日使用 · 占比：51%</title></rect><rect x="618.8" y="150" width="28" height="126" fill="#1f5fa9" rx="2"><title>GitHub 开源项目覆盖 · 占比：50%</title></rect><text x="127.2" y="294" text-anchor="middle" font-size="11" fill="#374151">Stack Ove…<title>Stack Overflow 使用或计划使用</title></text><text x="253.6" y="294" text-anchor="middle" font-size="11" fill="#374151">JetBrains…<title>JetBrains 定期使用</title></text><text x="380" y="294" text-anchor="middle" font-size="11" fill="#374151">JetBrains…<title>JetBrains 依赖≥1 助手</title></text><text x="506.4" y="294" text-anchor="middle" font-size="11" fill="#374151">Stack Ove…<title>Stack Overflow 每日使用</title></text><text x="632.8" y="294" text-anchor="middle" font-size="11" fill="#374151">GitHub 开源…<title>GitHub 开源项目覆盖</title></text><rect x="64" y="321" width="12" height="12" fill="#1f5fa9" rx="2"/><text x="81" y="331" font-size="12" fill="#374151">占比</text></svg><div class="chart-foot">数据来源证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div></figure><figure class="chart-card" id="chart-CH-02"><figcaption><span class="chart-id">CH-02</span>严格实验对「AI 提效」的效应量估计（% 任务耗时变化，负值＝变慢）<span class="chart-unit">单位：%</span></figcaption><svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>严格实验对「AI 提效」的效应量估计（% 任务耗时变化，负值＝变慢）</title><line x1="64" y1="24" x2="696" y2="24" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="34" text-anchor="end" font-size="11" fill="#6b7280">25</text><line x1="64" y1="87" x2="696" y2="87" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="91" text-anchor="end" font-size="11" fill="#6b7280">18.75</text><line x1="64" y1="150" x2="696" y2="150" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="154" text-anchor="end" font-size="11" fill="#6b7280">12.5</text><line x1="64" y1="213" x2="696" y2="213" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="217" text-anchor="end" font-size="11" fill="#6b7280">6.25</text><line x1="64" y1="276" x2="696" y2="276" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="274" text-anchor="end" font-size="11" fill="#6b7280">0</text><line x1="64" y1="276" x2="696" y2="276" stroke="#94a3b8" stroke-width="1"/><rect x="155.33" y="64.32" width="28" height="211.68" fill="#1f5fa9" rx="2"><title>Google 企业 RCT (n=96) · 任务耗时变化：21%</title></rect><rect x="366" y="276" width="28" height="0.8" fill="#1f5fa9" rx="2"><title>METR RCT (n=16, 246 任务) · 任务耗时变化：-19%</title></rect><rect x="576.67" y="276" width="28" height="0.8" fill="#1f5fa9" rx="2"><title>METR 2026 新招募子集 · 任务耗时变化：-4%</title></rect><text x="169.33" y="294" text-anchor="middle" font-size="11" fill="#374151">Google 企业…<title>Google 企业 RCT (n=96)</title></text><text x="380" y="294" text-anchor="middle" font-size="11" fill="#374151">METR RCT …<title>METR RCT (n=16, 246 任务)</title></text><text x="590.67" y="294" text-anchor="middle" font-size="11" fill="#374151">METR 2026…<title>METR 2026 新招募子集</title></text><rect x="64" y="321" width="12" height="12" fill="#1f5fa9" rx="2"/><text x="81" y="331" font-size="12" fill="#374151">任务耗时变化</text></svg><div class="chart-foot">数据来源证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button><button type="button" class="ev-tag" data-ev="EV-012" title="跳转到证据 EV-012">EV-012</button></span></div></figure><figure class="chart-card" id="chart-CH-03"><figcaption><span class="chart-id">CH-03</span>DORA：AI 采纳增加 25% 伴随的交付指标变化（%）<span class="chart-unit">单位：%</span></figcaption><svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>DORA：AI 采纳增加 25% 伴随的交付指标变化（%）</title><line x1="64" y1="24" x2="696" y2="24" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="34" text-anchor="end" font-size="11" fill="#6b7280">1</text><line x1="64" y1="87" x2="696" y2="87" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="91" text-anchor="end" font-size="11" fill="#6b7280">0.75</text><line x1="64" y1="150" x2="696" y2="150" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="154" text-anchor="end" font-size="11" fill="#6b7280">0.5</text><line x1="64" y1="213" x2="696" y2="213" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="217" text-anchor="end" font-size="11" fill="#6b7280">0.25</text><line x1="64" y1="276" x2="696" y2="276" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="274" text-anchor="end" font-size="11" fill="#6b7280">0</text><line x1="64" y1="276" x2="696" y2="276" stroke="#94a3b8" stroke-width="1"/><rect x="208" y="276" width="28" height="0.8" fill="#1f5fa9" rx="2"><title>交付吞吐 · 变化：-1.5%</title></rect><rect x="524" y="276" width="28" height="0.8" fill="#1f5fa9" rx="2"><title>交付稳定性 · 变化：-7.2%</title></rect><text x="222" y="294" text-anchor="middle" font-size="11" fill="#374151">交付吞吐<title>交付吞吐</title></text><text x="538" y="294" text-anchor="middle" font-size="11" fill="#374151">交付稳定性<title>交付稳定性</title></text><rect x="64" y="321" width="12" height="12" fill="#1f5fa9" rx="2"/><text x="81" y="331" font-size="12" fill="#374151">变化</text></svg><div class="chart-foot">数据来源证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-009" title="跳转到证据 EV-009">EV-009</button></span></div></figure><figure class="chart-card" id="chart-CH-04"><figcaption><span class="chart-id">CH-04</span>DORA：有治理措施的组织 AI 采纳相对增幅（%，同一研究内部）<span class="chart-unit">单位：%</span></figcaption><svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="100%" height="auto" role="img" preserveAspectRatio="xMidYMid meet"><title>DORA：有治理措施的组织 AI 采纳相对增幅（%，同一研究内部）</title><line x1="64" y1="24" x2="696" y2="24" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="34" text-anchor="end" font-size="11" fill="#6b7280">500</text><line x1="64" y1="87" x2="696" y2="87" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="91" text-anchor="end" font-size="11" fill="#6b7280">375</text><line x1="64" y1="150" x2="696" y2="150" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="154" text-anchor="end" font-size="11" fill="#6b7280">250</text><line x1="64" y1="213" x2="696" y2="213" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="217" text-anchor="end" font-size="11" fill="#6b7280">125</text><line x1="64" y1="276" x2="696" y2="276" stroke="#e2e8f0" stroke-width="1"/><text x="56" y="274" text-anchor="end" font-size="11" fill="#6b7280">0</text><line x1="64" y1="276" x2="696" y2="276" stroke="#94a3b8" stroke-width="1"/><rect x="155.33" y="48.7" width="28" height="227.3" fill="#1f5fa9" rx="2"><title>有可接受使用政策 · 相对增幅：451%</title></rect><rect x="366" y="209.98" width="28" height="66.02" fill="#1f5fa9" rx="2"><title>给出专门学习时间 · 相对增幅：131%</title></rect><rect x="576.67" y="213" width="28" height="63" fill="#1f5fa9" rx="2"><title>正视岗位焦虑 · 相对增幅：125%</title></rect><text x="169.33" y="294" text-anchor="middle" font-size="11" fill="#374151">有可接受使用政策<title>有可接受使用政策</title></text><text x="380" y="294" text-anchor="middle" font-size="11" fill="#374151">给出专门学习时间<title>给出专门学习时间</title></text><text x="590.67" y="294" text-anchor="middle" font-size="11" fill="#374151">正视岗位焦虑<title>正视岗位焦虑</title></text><rect x="64" y="321" width="12" height="12" fill="#1f5fa9" rx="2"/><text x="81" y="331" font-size="12" fill="#374151">相对增幅</text></svg><div class="chart-foot">数据来源证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-010" title="跳转到证据 EV-010">EV-010</button></span></div></figure></div></section>
+<section class="module"><h2 id="sec-disputes" class="sec-title"><span class="sec-num">5</span>争议与反证分析</h2><div class="card dispute" id="dispute-1"><h3><span class="disp-num">争议 1</span>AI 编程助手是否真实提升开发者与团队效能（提效幅度与方向）</h3><div class="matrix"><div class="side side-pro"><h4>正方</h4><p class="claim">支持提效：Google 对 96 名全职工程师的企业级任务 RCT 估计约 21% 提速；两份大规模调查显示 85%/84% 的使用率，且近九成使用者每周至少省 1 小时。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-013" title="跳转到证据 EV-013">EV-013</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button></span></div></div><div class="side side-con"><h4>反方</h4><p class="claim">不支持普遍提效：METR 任务级 RCT 在资深开发者熟悉的大型仓库上测得 19% 减速（开发者事前预计 +24%、事后仍自认 +20%）；DORA 组织级数据显示 AI 采纳增加 25% 伴随吞吐 −1.5%、稳定性 −7.2%。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-011" title="跳转到证据 EV-011">EV-011</button><button type="button" class="ev-tag" data-ev="EV-009" title="跳转到证据 EV-009">EV-009</button></span></div></div></div><div class="boundary"><strong>适用边界：</strong>两者场景不重叠（陌生内部任务 vs 熟悉的大型开源仓库；编码环节 vs 交付链路），且自报数据已被 METR 证明存在系统性乐观偏差。故目前只能判定为「分场景、且现有测量方法不足以给出可信的通用效应量」。</div></div><div class="card dispute" id="dispute-2"><h3><span class="disp-num">争议 2</span>高采用率数字能否代表真实渗透与价值兑现</h3><div class="matrix"><div class="side side-pro"><h4>正方</h4><p class="claim">三个独立的大样本口径都指向高位采用：Stack Overflow 84%（n=33,662）、JetBrains 85%（n=24,534）、GitHub 约 80% 新开发者首周使用 Copilot。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-002" title="跳转到证据 EV-002">EV-002</button><button type="button" class="ev-tag" data-ev="EV-003" title="跳转到证据 EV-003">EV-003</button><button type="button" class="ev-tag" data-ev="EV-001" title="跳转到证据 EV-001">EV-001</button></span></div></div><div class="side side-con"><h4>反方</h4><p class="claim">这些口径统计的是「使用/计划使用/首周试用」；企业侧证据显示落地多停在试点与部分铺开，并有实践者报告买单后实际使用率不足 30%（该条为待验证证据）。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-016" title="跳转到证据 EV-016">EV-016</button><button type="button" class="ev-tag" data-ev="EV-015" title="跳转到证据 EV-015">EV-015</button><button type="button" class="ev-tag" data-ev="EV-012" title="跳转到证据 EV-012">EV-012</button></span></div></div></div><div class="boundary"><strong>适用边界：</strong>争议未决的核心是缺少统一分母：没有任何来源同时给出「已付费席位」与「周活跃/日活跃席位」的对照数据。</div></div><div class="card dispute" id="dispute-3"><h3><span class="disp-num">争议 3</span>企业是否必须走私有化部署路线</h3><div class="matrix"><div class="side side-pro"><h4>正方</h4><p class="claim">中国市场厂商文档与合规要求把离线部署、信创适配、数据不出内网当作准入条件（通义灵码企业版、腾讯云 CodeBuddy 专有云）。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-006" title="跳转到证据 EV-006">EV-006</button><button type="button" class="ev-tag" data-ev="EV-007" title="跳转到证据 EV-007">EV-007</button></span></div></div><div class="side side-con"><h4>反方</h4><p class="claim">Cursor 与 Claude Code 证明纯云托管＋隐私模式（代码不用于训练）＋SOC 2/SSO 治理同样被大量财富 500 强接受，私有化并非唯一合规路径。</p><div class="finding-ev">证据：<span class="ev-tags"><button type="button" class="ev-tag" data-ev="EV-004" title="跳转到证据 EV-004">EV-004</button><button type="button" class="ev-tag" data-ev="EV-008" title="跳转到证据 EV-008">EV-008</button></span></div></div></div><div class="boundary"><strong>适用边界：</strong>两类证据的分母不同：一方谈强监管行业（金融/政企）的硬约束，一方谈整体大企业的可行选项，缺少按行业/数据分级拆分的采购数据。</div></div></section>
+<section class="module"><h2 id="sec-cases" class="sec-title"><span class="sec-num">6</span>典型案例库</h2><p class="empty-hint">payload 未提供 cases，本次报告不含案例库。</p></section>
+<section class="module"><h2 id="sec-evidence" class="sec-title"><span class="sec-num">7</span>完整证据库</h2><p class="hint">支持按类型 / 可信度 / 层级筛选，以及关键词全文检索；检索命中会同时高亮页面内的结论与证据条目。搜索框也可使用顶部全局搜索。</p><div class="filters" id="evidence-filters"><label class="filter">类型<select id="filter-type"><option value="">全部</option><option value="一手数据">一手数据</option><option value="厂商披露">厂商披露</option><option value="媒体报道">媒体报道</option><option value="第三方研究">第三方研究</option><option value="背景信息">背景信息</option></select></label><label class="filter">可信度<select id="filter-cred"><option value="">全部</option><option value="中">中</option><option value="待验证">待验证</option><option value="高">高</option></select></label><label class="filter">层级<select id="filter-layer"><option value="">全部</option><option value="一级">一级</option><option value="三级">三级</option><option value="二级">二级</option></select></label><button type="button" class="btn" id="filter-reset">重置筛选</button><span class="filter-count" id="evidence-count"></span></div><div class="evidence-list"><article class="evidence-card" id="EV-001" data-type="厂商披露" data-cred="中" data-layer="二级" data-search="ev-001 厂商披露 中 二级 web_fetch（github.blog 正文；wp json api 取全文） half (50%) of open source projects have at least one maintainer using github copilot. github octoverse 2025 报告给出平台侧规模与渗透数据：github 现有 1.8 亿以上开发者，50% 的开源项目至少有一位维护者在使用 github copilot，约 80% 的新开发者在注册后第一周内使用 copilot；每月合并 pr 达 4320 万（+23% yoy）。可信度=中：这是 github 自家平台的一手遥测数据，样本等于全平台（无抽样误差），但属厂商自我披露且报告中明确声明这些是观测性信号而非因果结论，且「第一周使用」不等于持续付费/深度使用。 octoverse: a new developer joins github every second as ai leads typescript to #1 https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-001</span><span class="chip chip-type">厂商披露</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch（github.blog 正文；WP JSON API 取全文）</span></header><p class="ev-content">GitHub Octoverse 2025 报告给出平台侧规模与渗透数据：GitHub 现有 1.8 亿以上开发者，50% 的开源项目至少有一位维护者在使用 GitHub Copilot，约 80% 的新开发者在注册后第一周内使用 Copilot；每月合并 PR 达 4320 万（+23% YoY）。可信度=中：这是 GitHub 自家平台的一手遥测数据，样本等于全平台（无抽样误差），但属厂商自我披露且报告中明确声明这些是观测性信号而非因果结论，且「第一周使用」不等于持续付费/深度使用。</p><blockquote class="ev-quote">Half (50%) of open source projects have at least one maintainer using GitHub Copilot.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank" rel="noopener">Octoverse: A new developer joins GitHub every second as AI leads TypeScript to #1</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-002" data-type="一手数据" data-cred="高" data-layer="二级" data-search="ev-002 一手数据 高 二级 web_fetch 84% of respondents are using or planning to use ai tools in their development process, an increase over last year (76%). this year we can see 51% of professional developers use ai tools daily. stack overflow 2025 开发者调查（有效样本 33,662 人，占受访者 68.7%）显示：84% 的受访者正在使用或计划使用 ai 工具（上年 76%），51% 的专业开发者每天使用；但同时正向情绪从 2023/2024 的 70%+ 降至 60%。可信度=高：独立于任何 ai 工具厂商的最大规模公开开发者调查，方法论与原始数据（odbl 许可）公开，且同时披露情绪下降的反向信号。 ai | 2025 stack overflow developer survey https://survey.stackoverflow.co/2025/ai 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-002</span><span class="chip chip-type">一手数据</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">Stack Overflow 2025 开发者调查（有效样本 33,662 人，占受访者 68.7%）显示：84% 的受访者正在使用或计划使用 AI 工具（上年 76%），51% 的专业开发者每天使用；但同时正向情绪从 2023/2024 的 70%+ 降至 60%。可信度=高：独立于任何 AI 工具厂商的最大规模公开开发者调查，方法论与原始数据（ODbL 许可）公开，且同时披露情绪下降的反向信号。</p><blockquote class="ev-quote">84% of respondents are using or planning to use AI tools in their development process, an increase over last year (76%). This year we can see 51% of professional developers use AI tools daily.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://survey.stackoverflow.co/2025/ai" target="_blank" rel="noopener">AI | 2025 Stack Overflow Developer Survey</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-003" data-type="第三方研究" data-cred="中" data-layer="二级" data-search="ev-003 第三方研究 中 二级 web_fetch + mcp__metaso__metaso_web_reader ai is becoming a standard in developers’ lives: 85% of developers regularly use ai tools for coding and development, and 62% rely on at least one ai coding assistant, agent, or code editor. jetbrains《state of developer ecosystem 2025》（2025 年 4–6 月调研，清洗后 24,534 名开发者、194 个国家）显示：85% 的开发者定期在编码与开发中使用 ai 工具，62% 依赖至少一个 ai 编码助手/agent/编辑器；近九成使用者每周至少省 1 小时，五分之一每周省 8 小时以上。可信度=中：调研规模与方法论披露充分，但 jetbrains 本身是 ai ide/助手（junie）的收费厂商，题目措辞（「定期使用」）比 stack overflow 的「使用或计划使用」更容易得到高比例，且省时数据来自自报。 the state of developer ecosystem 2025: coding in the age of ai, new productivity metrics, and changing realities https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-003</span><span class="chip chip-type">第三方研究</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch + mcp__metaso__metaso_web_reader</span></header><p class="ev-content">JetBrains《State of Developer Ecosystem 2025》（2025 年 4–6 月调研，清洗后 24,534 名开发者、194 个国家）显示：85% 的开发者定期在编码与开发中使用 AI 工具，62% 依赖至少一个 AI 编码助手/agent/编辑器；近九成使用者每周至少省 1 小时，五分之一每周省 8 小时以上。可信度=中：调研规模与方法论披露充分，但 JetBrains 本身是 AI IDE/助手（Junie）的收费厂商，题目措辞（「定期使用」）比 Stack Overflow 的「使用或计划使用」更容易得到高比例，且省时数据来自自报。</p><blockquote class="ev-quote">AI is becoming a standard in developers’ lives: 85% of developers regularly use AI tools for coding and development, and 62% rely on at least one AI coding assistant, agent, or code editor.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/" target="_blank" rel="noopener">The State of Developer Ecosystem 2025: Coding in the Age of AI, New Productivity Metrics, and Changing Realities</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-004" data-type="厂商披露" data-cred="中" data-layer="二级" data-search="ev-004 厂商披露 中 二级 web_fetch + mcp__metaso__metaso_web_reader cursor for enterprise — trusted by 64% of fortune 500 companies cursor（anysphere）企业版官方页主张其企业渗透：页面标题即宣称受到 64% 的财富 500 强企业信任；其中文本地化版本另称「53% 财富 1000 强企业中的工程师在使用 cursor」「50,000+ 众多企业将 cursor 作为首选 ide」，并列出 soc 2 type ii、隐私模式（代码数据永不用于训练）、saml sso/scim/rbac 等企业级合规能力。可信度=中：属 ide 原生厂商的营销口径，未披露统计方法与分母，只能作为「ide 原生路线以云托管+企业合规能力切入大企业」的路线证据，不能作为独立采用率口径。 cursor for enterprise https://cursor.com/enterprise 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-004</span><span class="chip chip-type">厂商披露</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch + mcp__metaso__metaso_web_reader</span></header><p class="ev-content">Cursor（Anysphere）企业版官方页主张其企业渗透：页面标题即宣称受到 64% 的财富 500 强企业信任；其中文本地化版本另称「53% 财富 1000 强企业中的工程师在使用 Cursor」「50,000+ 众多企业将 Cursor 作为首选 IDE」，并列出 SOC 2 Type II、隐私模式（代码数据永不用于训练）、SAML SSO/SCIM/RBAC 等企业级合规能力。可信度=中：属 IDE 原生厂商的营销口径，未披露统计方法与分母，只能作为「IDE 原生路线以云托管+企业合规能力切入大企业」的路线证据，不能作为独立采用率口径。</p><blockquote class="ev-quote">Cursor for Enterprise — Trusted by 64% of Fortune 500 companies</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://cursor.com/enterprise" target="_blank" rel="noopener">Cursor for Enterprise</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-005" data-type="背景信息" data-cred="高" data-layer="二级" data-search="ev-005 背景信息 高 二级 web_fetch tabby is an open-source, self-hosted ai coding assistant. with tabby, every team can set up its own llm-powered code completion server with ease. tabby 官方文档自我定义为开源、可自托管的 ai 编码助手，任何团队都能自行架设 llm 驱动的补全服务器，并强调模型可换（codellama/starcoder/codegen）、engops 团队可「掌控数据」。可信度=高（仅就「开源自托管路线确实存在且有官方部署路径」这一事实而言）：这是项目官方文档的原话，可复现；但该来源不含任何采用率或效能数据，因此不能用于市场规模的推断。 👋 what&#x27;s tabby | tabby https://tabby.tabbyml.com/docs/welcome/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-005</span><span class="chip chip-type">背景信息</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">Tabby 官方文档自我定义为开源、可自托管的 AI 编码助手，任何团队都能自行架设 LLM 驱动的补全服务器，并强调模型可换（CodeLlama/StarCoder/CodeGen）、EngOps 团队可「掌控数据」。可信度=高（仅就「开源自托管路线确实存在且有官方部署路径」这一事实而言）：这是项目官方文档的原话，可复现；但该来源不含任何采用率或效能数据，因此不能用于市场规模的推断。</p><blockquote class="ev-quote">Tabby is an open-source, self-hosted AI coding assistant. With Tabby, every team can set up its own LLM-powered code completion server with ease.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://tabby.tabbyml.com/docs/welcome/" target="_blank" rel="noopener">👋 What&#x27;s Tabby | Tabby</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-006" data-type="厂商披露" data-cred="中" data-layer="二级" data-search="ev-006 厂商披露 中 二级 web_fetch 代码数据仅用于推理，不会进行二次训练，杜绝数据泄露风险。 阿里云通义灵码企业版官方推广页（中文）以数据安全与合规为核心卖点，承诺「代码数据仅用于推理，不会进行二次训练」，并宣称已服务建设银行、中华财险、哈啰集团、长安汽车等上万家企业，覆盖金融、制造、互联网、交通、汽车、能源，企业版提供私有化部署形态。可信度=中：属中文厂商官网一手声明，「服务 10000+ 企业客户」无第三方审计口径；但数据安全承诺与私有化选项本身是可核验的产品事实，可用于说明国内采购的合规准入门槛。 通义灵码企业版，等你来体验！ https://dashi.aliyun.com/activity/lingma 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-006</span><span class="chip chip-type">厂商披露</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">阿里云通义灵码企业版官方推广页（中文）以数据安全与合规为核心卖点，承诺「代码数据仅用于推理，不会进行二次训练」，并宣称已服务建设银行、中华财险、哈啰集团、长安汽车等上万家企业，覆盖金融、制造、互联网、交通、汽车、能源，企业版提供私有化部署形态。可信度=中：属中文厂商官网一手声明，「服务 10000+ 企业客户」无第三方审计口径；但数据安全承诺与私有化选项本身是可核验的产品事实，可用于说明国内采购的合规准入门槛。</p><blockquote class="ev-quote">代码数据仅用于推理，不会进行二次训练，杜绝数据泄露风险。</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://dashi.aliyun.com/activity/lingma" target="_blank" rel="noopener">通义灵码企业版，等你来体验！</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-007" data-type="厂商披露" data-cred="高" data-layer="二级" data-search="ev-007 厂商披露 高 二级 mcp__metaso__metaso_web_reader 完全私有化部署:支持在客户自有idc环境中完全离线部署，确保代码和数据不出企业内网 腾讯云代码助手（codebuddy）企业版官方文档（中文）把「完全私有化部署」列为首要优势：支持在客户自有 idc 环境完全离线部署、支持国产化显卡与服务器满足信创要求、企业数据完全隔离；文档并披露席位制价格——saas 企业版 198 元/人/月、2376 元/人/年（1 个坐席起购），专有云企业版 316 元/人/月、3792 元/人/年（100 个坐席起购）。可信度=高：这是官方产品文档中可直接对照的部署规格与公开定价，条款明确、可复核；局限在于它描述的是产品能力与报价，而非实际采购与使用效果。 概述 | 腾讯云代码助手企业版 https://www.codebuddy.cn/docs/enterprise/overview 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-007</span><span class="chip chip-type">厂商披露</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：mcp__metaso__metaso_web_reader</span></header><p class="ev-content">腾讯云代码助手（CodeBuddy）企业版官方文档（中文）把「完全私有化部署」列为首要优势：支持在客户自有 IDC 环境完全离线部署、支持国产化显卡与服务器满足信创要求、企业数据完全隔离；文档并披露席位制价格——SaaS 企业版 198 元/人/月、2376 元/人/年（1 个坐席起购），专有云企业版 316 元/人/月、3792 元/人/年（100 个坐席起购）。可信度=高：这是官方产品文档中可直接对照的部署规格与公开定价，条款明确、可复核；局限在于它描述的是产品能力与报价，而非实际采购与使用效果。</p><blockquote class="ev-quote">完全私有化部署:支持在客户自有IDC环境中完全离线部署，确保代码和数据不出企业内网</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://www.codebuddy.cn/docs/enterprise/Overview" target="_blank" rel="noopener">概述 | 腾讯云代码助手企业版</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-008" data-type="厂商披露" data-cred="中" data-layer="二级" data-search="ev-008 厂商披露 中 二级 web_fetch hand claude a bug fix, test, or multi-day migration. steer and review from your terminal, ide, slack, or web. anthropic 的 claude code 产品页代表「通用大模型厂商」路线的形态：把编码 agent 做成跨终端工具（terminal、ide、slack、web 均可驱动与审查），并以 claude pro/max 订阅包含而非以私有化交付为主要卖点。可信度=中：是厂商产品页原文，可核验产品定位，但页面对企业合规/部署形态的说明不在首屏正文内，且不含任何采用率数据。 claude code https://claude.com/product/claude-code 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-008</span><span class="chip chip-type">厂商披露</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">Anthropic 的 Claude Code 产品页代表「通用大模型厂商」路线的形态：把编码 agent 做成跨终端工具（terminal、IDE、Slack、web 均可驱动与审查），并以 Claude Pro/Max 订阅包含而非以私有化交付为主要卖点。可信度=中：是厂商产品页原文，可核验产品定位，但页面对企业合规/部署形态的说明不在首屏正文内，且不含任何采用率数据。</p><blockquote class="ev-quote">Hand Claude a bug fix, test, or multi-day migration. Steer and review from your terminal, IDE, Slack, or web.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://claude.com/product/claude-code" target="_blank" rel="noopener">Claude Code</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-009" data-type="第三方研究" data-cred="高" data-layer="二级" data-search="ev-009 第三方研究 高 二级 web_fetch contrary to expectations, a 25% increase in ai adoption is associated with a 1.5% decrease in delivery throughput and a 7.2% decrease in delivery stability. google cloud dora《impact of generative ai in software development》报告给出组织级反向结论：ai 采纳增加 25% 反而伴随交付吞吐下降 1.5%、交付稳定性下降 7.2%，机制解释是 ai 让代码生产更快→批量（batch size）变大→评审更慢、更易引入不稳定。可信度=高：dora 是多年连续、大样本的行业基准研究，方法论公开且被广泛引用；保留意见是它由 google cloud 主办、指标来自组织自报，因此「关联」不等于「因果」。 impact of generative ai in software development | dora https://dora.dev/ai/gen-ai-report/report/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-009</span><span class="chip chip-type">第三方研究</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">Google Cloud DORA《Impact of Generative AI in Software Development》报告给出组织级反向结论：AI 采纳增加 25% 反而伴随交付吞吐下降 1.5%、交付稳定性下降 7.2%，机制解释是 AI 让代码生产更快→批量（batch size）变大→评审更慢、更易引入不稳定。可信度=高：DORA 是多年连续、大样本的行业基准研究，方法论公开且被广泛引用；保留意见是它由 Google Cloud 主办、指标来自组织自报，因此「关联」不等于「因果」。</p><blockquote class="ev-quote">Contrary to expectations, a 25% increase in AI adoption is associated with a 1.5% decrease in delivery throughput and a 7.2% decrease in delivery stability.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://dora.dev/ai/gen-ai-report/report/" target="_blank" rel="noopener">Impact of Generative AI in Software Development | DORA</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-010" data-type="第三方研究" data-cred="中" data-layer="二级" data-search="ev-010 第三方研究 中 二级 web_fetch organizations with clear ai acceptable-use policies show a 451% increase in ai adoption compared to those without. 同一份 dora 报告另给出采购/治理侧的关键量化：有明确「可接受使用政策（acceptable-use policy）」的组织，其 ai 采纳率比没有政策的高 451%；给出专门学习时间的组织团队采纳率提升 131%；正视岗位焦虑的组织采纳率高 125%。可信度=中：数据本身来自上述权威研究，但本条与 ev-009 同源（同一责任主体 google cloud dora），因此不能作为该主题的第二个独立来源，只能作为同一研究内部的另一维度证据；同时「451%」为相对增幅，基数未在页面正文给出。 impact of generative ai in software development | dora https://dora.dev/ai/gen-ai-report/report/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-010</span><span class="chip chip-type">第三方研究</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">同一份 DORA 报告另给出采购/治理侧的关键量化：有明确「可接受使用政策（acceptable-use policy）」的组织，其 AI 采纳率比没有政策的高 451%；给出专门学习时间的组织团队采纳率提升 131%；正视岗位焦虑的组织采纳率高 125%。可信度=中：数据本身来自上述权威研究，但本条与 EV-009 同源（同一责任主体 Google Cloud DORA），因此不能作为该主题的第二个独立来源，只能作为同一研究内部的另一维度证据；同时「451%」为相对增幅，基数未在页面正文给出。</p><blockquote class="ev-quote">Organizations with clear AI acceptable-use policies show a 451% increase in AI adoption compared to those without.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://dora.dev/ai/gen-ai-report/report/" target="_blank" rel="noopener">Impact of Generative AI in Software Development | DORA</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-011" data-type="第三方研究" data-cred="高" data-layer="二级" data-search="ev-011 第三方研究 高 二级 web_fetch surprisingly, we find that when developers use ai tools, they take 19% longer than without—ai makes them slower. metr 于 2025 年 7 月发布的随机对照试验（rct）发现：16 名资深开源开发者在其熟悉的大型仓库（平均 22k+ stars、1m+ 行代码）完成 246 个真实 issue 时，允许使用 ai 工具反而慢 19%；开发者事前预计提速 24%，事后仍自认提速 20%。可信度=高：这是任务级随机化、录屏验证、数据与论文公开的因果实验，作者同时列出不适用的外推范围（不代表多数开发者、不代表其他领域、不排除更好用法）；局限是样本仅 16 人且为资深开源场景。 measuring the impact of early-2025 ai on experienced open-source developer productivity https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-011</span><span class="chip chip-type">第三方研究</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">METR 于 2025 年 7 月发布的随机对照试验（RCT）发现：16 名资深开源开发者在其熟悉的大型仓库（平均 22k+ stars、1M+ 行代码）完成 246 个真实 issue 时，允许使用 AI 工具反而慢 19%；开发者事前预计提速 24%，事后仍自认提速 20%。可信度=高：这是任务级随机化、录屏验证、数据与论文公开的因果实验，作者同时列出不适用的外推范围（不代表多数开发者、不代表其他领域、不排除更好用法）；局限是样本仅 16 人且为资深开源场景。</p><blockquote class="ev-quote">Surprisingly, we find that when developers use AI tools, they take 19% longer than without—AI makes them slower.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-012" data-type="第三方研究" data-cred="高" data-layer="三级" data-search="ev-012 第三方研究 高 三级 web_fetch we believe that the data from our new experiment gives us an unreliable signal of the current productivity effect of ai tools metr 于 2026 年 2 月更新后续实验（57 名开发者、143 个仓库、800+ 任务）时公开承认测量失效：30%–50% 的开发者承认会刻意不提交「不想在无 ai 条件下做」的任务，报酬从 150 美元/时降到 50 美元/时也带来选择偏差，因此新数据「给出的是不可靠信号」；对原参与者的子集估计为提速 18%（置信区间 -38% 至 +9%），新招募者为 -4%（-15% 至 +9%）。可信度=高：这是研究者主动否定自家新数据可靠性的透明自我更正，直接限定了所有「ai 提效 x%」类结论的可信边界。 we are changing our developer productivity experiment design https://metr.org/blog/2026-02-24-uplift-update/ 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-012</span><span class="chip chip-type">第三方研究</span><span class="chip cred-high">可信度：高</span><span class="chip chip-layer">层级：三级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">METR 于 2026 年 2 月更新后续实验（57 名开发者、143 个仓库、800+ 任务）时公开承认测量失效：30%–50% 的开发者承认会刻意不提交「不想在无 AI 条件下做」的任务，报酬从 150 美元/时降到 50 美元/时也带来选择偏差，因此新数据「给出的是不可靠信号」；对原参与者的子集估计为提速 18%（置信区间 -38% 至 +9%），新招募者为 -4%（-15% 至 +9%）。可信度=高：这是研究者主动否定自家新数据可靠性的透明自我更正，直接限定了所有「AI 提效 X%」类结论的可信边界。</p><blockquote class="ev-quote">we believe that the data from our new experiment gives us an unreliable signal of the current productivity effect of AI tools</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://metr.org/blog/2026-02-24-uplift-update/" target="_blank" rel="noopener">We are Changing our Developer Productivity Experiment Design</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-013" data-type="第三方研究" data-cred="中" data-layer="二级" data-search="ev-013 第三方研究 中 二级 web_fetch our randomized controlled trial with 96 full-time google software engineers contributes to this literature by sharing an estimate of the impact of three ai features on the time developers spent on a complex, enterprise-grade task. we found that ai significantly shortened the time developers spent on task. 与 metr 结论方向相反的企业内 rct：google 对 96 名全职软件工程师的随机对照试验显示，三项 ai 功能显著缩短了完成一个复杂企业级任务的时间，控制已知影响因素后最佳估计约为提速 21%（作者注明置信区间较大），并明确邀请后续研究验证该效应能否跨工具、跨时间外推。可信度=中：研究设计与样本规模优于一般厂商案例，但由 google 用自家内部工具在 2024 年夏季完成、自研自发，且作者自己声明不能假定效应可泛化。 how much does ai impact development speed? an enterprise-based randomized controlled trial https://arxiv.org/abs/2410.12944 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-013</span><span class="chip chip-type">第三方研究</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">与 METR 结论方向相反的企业内 RCT：Google 对 96 名全职软件工程师的随机对照试验显示，三项 AI 功能显著缩短了完成一个复杂企业级任务的时间，控制已知影响因素后最佳估计约为提速 21%（作者注明置信区间较大），并明确邀请后续研究验证该效应能否跨工具、跨时间外推。可信度=中：研究设计与样本规模优于一般厂商案例，但由 Google 用自家内部工具在 2024 年夏季完成、自研自发，且作者自己声明不能假定效应可泛化。</p><blockquote class="ev-quote">Our randomized controlled trial with 96 full-time Google software engineers contributes to this literature by sharing an estimate of the impact of three AI features on the time developers spent on a complex, enterprise-grade task. We found that AI significantly shortened the time developers spent on task.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://arxiv.org/abs/2410.12944" target="_blank" rel="noopener">How much does AI impact development speed? An enterprise-based randomized controlled trial</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-014" data-type="媒体报道" data-cred="中" data-layer="二级" data-search="ev-014 媒体报道 中 二级 mcp__metaso__metaso_web_reader 经验丰富的开源开发者在使用ai编程工具时，完成任务的时间平均增长了19%。 中文媒体（澎湃号「大数据文摘」出品）以中文完整转述 metr 实验：经验丰富的开源开发者使用 ai 编程工具后完成任务时间平均增长 19%，并解释「快感错觉」来自提示设计、审查产出、等待响应与理解生成内容的时间挤占。可信度=中：属二手转述而非一手数据，但内容与 metr 原文一致、未发现失真，可作为中文读者入口与交叉验证；不能替代原文作为一级证据。 看似加速，实则拖慢：ai 写代码让开发者效率倒退19% https://m.thepaper.cn/kuaibao_detail.jsp?contid=31174867 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-014</span><span class="chip chip-type">媒体报道</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：二级</span><span class="chip chip-tool">工具：mcp__metaso__metaso_web_reader</span></header><p class="ev-content">中文媒体（澎湃号「大数据文摘」出品）以中文完整转述 METR 实验：经验丰富的开源开发者使用 AI 编程工具后完成任务时间平均增长 19%，并解释「快感错觉」来自提示设计、审查产出、等待响应与理解生成内容的时间挤占。可信度=中：属二手转述而非一手数据，但内容与 METR 原文一致、未发现失真，可作为中文读者入口与交叉验证；不能替代原文作为一级证据。</p><blockquote class="ev-quote">经验丰富的开源开发者在使用AI编程工具时，完成任务的时间平均增长了19%。</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://m.thepaper.cn/kuaibao_detail.jsp?contid=31174867" target="_blank" rel="noopener">看似加速，实则拖慢：AI 写代码让开发者效率倒退19%</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-015" data-type="第三方研究" data-cred="中" data-layer="一级" data-search="ev-015 第三方研究 中 一级 web_fetch ai is being tested nearly everywhere, but the leap to full integration remains rare. for most, ai is still in pilots and partial rollouts rather than embedded in core workflows. jetbrains 调研官网的 ai 章节结论为「ai 落地延迟」：ai 几乎到处都在试点，但跃迁到完全集成为止仍然罕见，多数组织仍停在试点与部分铺开阶段。可信度=中：结论来自同一份 24,534 人调研的官方呈现，但该页的图表数值依赖前端脚本渲染，我在本次取证中未能取到具体百分比数字，只能核实这段定性表述；因此它适合用于「试点多、全量少」的定性判断，不能引用具体比例。 artificial intelligence - the state of developer ecosystem in 2025 https://devecosystem-2025.jetbrains.com/artificial-intelligence 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-015</span><span class="chip chip-type">第三方研究</span><span class="chip cred-mid">可信度：中</span><span class="chip chip-layer">层级：一级</span><span class="chip chip-tool">工具：web_fetch</span></header><p class="ev-content">JetBrains 调研官网的 AI 章节结论为「AI 落地延迟」：AI 几乎到处都在试点，但跃迁到完全集成为止仍然罕见，多数组织仍停在试点与部分铺开阶段。可信度=中：结论来自同一份 24,534 人调研的官方呈现，但该页的图表数值依赖前端脚本渲染，我在本次取证中未能取到具体百分比数字，只能核实这段定性表述；因此它适合用于「试点多、全量少」的定性判断，不能引用具体比例。</p><blockquote class="ev-quote">AI is being tested nearly everywhere, but the leap to full integration remains rare. For most, AI is still in pilots and partial rollouts rather than embedded in core workflows.</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://devecosystem-2025.jetbrains.com/artificial-intelligence" target="_blank" rel="noopener">Artificial Intelligence - The State of Developer Ecosystem in 2025</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article><article class="evidence-card" id="EV-016" data-type="媒体报道" data-cred="待验证" data-layer="三级" data-search="ev-016 媒体报道 待验证 三级 mcp__metaso__metaso_web_reader 为什么我们花了几十万买的github copilot，团队的实际使用率还不到30%？ 中文技术社区（腾讯云开发者社区，作者授权发表）记录了「买单不等于渗透」的实践者观察：cto 质问「花了几十万买的 github copilot，团队的实际使用率还不到 30%」。可信度=待验证：属个人从业者叙事、无样本量、无统计方法，且正文在社区页面仅公开开头部分，无法核验后续论证；仅可作为「采购与真实使用之间存在巨大折损」这一待验证信号的线索，不可作为量化结论。 ai编程如何在企业落地——代码采纳率从30%到80% https://cloud.tencent.com.cn/developer/article/2588124 2026-09-24t19:02:52+08:00"><header class="ev-head"><span class="ev-id">EV-016</span><span class="chip chip-type">媒体报道</span><span class="chip cred-low">可信度：待验证</span><span class="chip chip-layer">层级：三级</span><span class="chip chip-tool">工具：mcp__metaso__metaso_web_reader</span></header><p class="ev-content">中文技术社区（腾讯云开发者社区，作者授权发表）记录了「买单不等于渗透」的实践者观察：CTO 质问「花了几十万买的 GitHub Copilot，团队的实际使用率还不到 30%」。可信度=待验证：属个人从业者叙事、无样本量、无统计方法，且正文在社区页面仅公开开头部分，无法核验后续论证；仅可作为「采购与真实使用之间存在巨大折损」这一待验证信号的线索，不可作为量化结论。</p><blockquote class="ev-quote">为什么我们花了几十万买的GitHub Copilot，团队的实际使用率还不到30%？</blockquote><footer class="ev-foot"><span class="ev-source">来源：<a href="https://cloud.tencent.com.cn/developer/article/2588124" target="_blank" rel="noopener">AI编程如何在企业落地——代码采纳率从30%到80%</a></span><span class="ev-time">提取时间：2026-09-24T19:02:52+08:00</span></footer></article></div><p class="empty-hint" id="evidence-nomatch" hidden>当前筛选 / 检索条件下没有匹配的证据条目。</p></section>
+<section class="module"><h2 id="sec-appendix" class="sec-title"><span class="sec-num">8</span>附录</h2><div class="card"><h3>研究流程执行记录</h3><table class="data-table"><thead><tr><th>阶段</th><th>开始</th><th>结束</th><th>回退次数</th><th>备注</th></tr></thead><tbody><tr><td>S1 广度发现（一级检索）</td><td class="nowrap">2026-09-24T18:40:00+08:00</td><td class="nowrap">2026-09-24T19:00:00+08:00</td><td class="num">1</td><td>计划的双引擎中 tavily 全程不可用（配额耗尽），一级检索改由 web_search 与秘塔检索承担；检索词覆盖市场格局、采用率、采购合规、效能证据四条主线。</td></tr><tr><td>S2 深度核对（二级取全文）</td><td class="nowrap">2026-09-24T19:00:00+08:00</td><td class="nowrap">2026-09-24T19:20:00+08:00</td><td class="num">0</td><td>用 web_fetch 与秘塔 reader 逐页取正文并抽取逐字引文；13 条证据达到二级（读到正文），1 条停留一级。</td></tr><tr><td>S3 缺口补充与反证检索（三级）</td><td class="nowrap">2026-09-24T19:20:00+08:00</td><td class="nowrap">2026-09-24T19:28:00+08:00</td><td class="num">2</td><td>第一次回退：效能主题首轮只召回厂商正面材料，追加「RCT / randomized controlled trial / 减速」检索词后取得 METR 与 DORA 两份反向证据。第二次回退：尝试取微信公众号原文未果（秘塔仅返回聚合页），改用中文厂商官网与中文媒体作为中文来源。</td></tr><tr><td>S4 认知地图与结论归并</td><td class="nowrap">2026-09-24T19:28:00+08:00</td><td class="nowrap">2026-09-24T19:32:00+08:00</td><td class="num">0</td><td>9 条结论全部绑定证据 ID；每个核心结论复核独立来源数 ≥2，未达标的一条（采购与真实渗透折损）降级为「待验证」。</td></tr><tr><td>S5 双格式输出与一致性校验</td><td class="nowrap">2026-09-24T19:32:00+08:00</td><td class="nowrap">2026-09-24T19:36:00+08:00</td><td class="num">1</td><td>先出文档版，再依 payload 生成单文件离线 HTML；一致性校验发现案例模块缺少真实可核验材料，回退后改为不设案例模块（不以虚构时间线凑数）。</td></tr><tr><td>S6 证据归档与写回决策</td><td class="nowrap">2026-09-24T19:36:00+08:00</td><td class="nowrap">2026-09-24T19:40:00+08:00</td><td class="num">0</td><td>Writeback = proposal：本轮浮现两条可复用规则（① 公众号定向检索不可用时如何降级并在附录声明；② 主检索引擎配额耗尽时的回退口径），暂只提议不动手，待用户确认后写入 references/。</td></tr></tbody></table><p class="hint">合计阶段 6 个，回退 4 次。回退记录用于说明检索或核对过程中的返工，是判断结论可靠性的辅助信息。</p></div><div class="card"><h3>异常处理</h3><ul><li><strong>S1 广度发现（一级检索）</strong>：回退 1 次 —— 计划的双引擎中 tavily 全程不可用（配额耗尽），一级检索改由 web_search 与秘塔检索承担；检索词覆盖市场格局、采用率、采购合规、效能证据四条主线。</li><li><strong>S3 缺口补充与反证检索（三级）</strong>：回退 2 次 —— 第一次回退：效能主题首轮只召回厂商正面材料，追加「RCT / randomized controlled trial / 减速」检索词后取得 METR 与 DORA 两份反向证据。第二次回退：尝试取微信公众号原文未果（秘塔仅返回聚合页），改用中文厂商官网与中文媒体作为中文来源。</li><li><strong>S5 双格式输出与一致性校验</strong>：回退 1 次 —— 先出文档版，再依 payload 生成单文件离线 HTML；一致性校验发现案例模块缺少真实可核验材料，回退后改为不设案例模块（不以虚构时间线凑数）。</li></ul></div><div class="card"><h3>归档信息</h3><table class="data-table"><tbody><tr><th>报告主题</th><td>AI 编程助手的市场格局与真实采用率</td></tr><tr><th>编制时间（来自 payload）</th><td>2026-09-24T19:30:00+08:00</td></tr><tr><th>payload 内容指纹（sha256 前 8 位）</th><td>8e20ef85</td></tr><tr><th>证据条目总数</th><td>16</td></tr><tr><th>产物形态</th><td>文档版 Markdown 报告 + 单文件离线 HTML 交互式报告（两版内容字段一致）</td></tr><tr><th>离线要求</th><td>不引用任何 CDN / 外链 JS / 外链 CSS / 外部字体 / 外部图片；唯一外部 URL 为证据原始链接</td></tr></tbody></table></div><div class="card"><h3>版本记录</h3><ul><li>v1.0（payload 指纹 8e20ef85）—— 由 scripts/build_report.py 依据同一 payload 生成，两版报告字段一致；生成过程不写入运行时时间戳，相同 payload 可复现完全相同的 HTML。</li></ul></div><div class="card"><h3>数据真实性声明</h3><p>本 payload 由 2026-09-24 的一次真实取证生成，全部 16 条证据均经实际打开正文并抽取逐字引文，URL 可直接访问核验。报告中的数字一律来自证据库引文，未使用估算或推断值。案例模块为空——本轮没有找到可核验的真实落地案例，故不以虚构时间线凑数。</p></div><div class="card"><h3>方法与工具链</h3><p>三级检索协同：一级以 web_search 与秘塔检索做广度发现；二级以 web_fetch 与秘塔 reader 取正文做深度核对；三级回退用于缺口补充与反证检索。每条外部事实绑定唯一证据 ID（EV-001 起顺序编号），结论、图表、争议均通过 EV ID 回溯到证据库。每条证据记录可信度等级并写明理由。</p></div><div class="card"><h3>异常处理与未取得项（降级声明）</h3><p>① 计划中的 tavily 检索与取全文引擎全程不可用（返回配额超限），一级/二级检索改由 web_search、web_fetch 与秘塔承担；② 微信公众号原文未取得——秘塔返回聚合页而非可打开的公众号链接，中文来源改由阿里云、腾讯云官方文档与澎湃号、腾讯云开发者社区承担；③ Faros AI 报告、MIT/Accenture 田野实验原文、Cursor 营收媒体原文、InfoQ 趋势报告、JetBrains 图表数值、信通院等官方报告正文均因 403、人机验证、前端渲染或仅有二手摘要而未取得，故本报告未纳入相应数字。以上降级均如实声明，未以推断替代。</p></div><div class="card"><h3>版本记录</h3><p>v1.0 —— 依据本 payload 生成文档版 Markdown 与单文件离线 HTML 两版，两版内容字段一致；生成不带运行时时间戳，产物哈希由 payload 内容决定，可复现（同一 payload 两次生成逐字节一致）。</p></div></section>
+</main>
+<footer class="doc-foot">本报告由 deep-research-collab 技能包的 scripts/build_report.py 依据 payload 指纹 8e20ef85 生成；文档版 Markdown 与单文件 HTML 两版内容字段一致。所有外部事实均绑定证据 ID，可回溯到完整证据库的原始链接。</footer>
+<script>
+(function () {
+  "use strict";
+
+  function qs(sel) { return document.querySelector(sel); }
+  function qsa(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+  /* ---------- 1. 证据标签跳转 + 高亮 3 秒 ---------- */
+  var flashTimers = {};
+
+  function flashEvidence(evId) {
+    var target = document.getElementById(evId);
+    if (!target) { return false; }
+    /* 目标可能被证据库筛选隐藏：先清空筛选，保证跳转可达 */
+    var visible = !target.classList.contains("ev-hidden");
+    if (!visible) {
+      var typeSel = qs("#filter-type"), credSel = qs("#filter-cred"), layerSel = qs("#filter-layer");
+      if (typeSel) { typeSel.value = ""; }
+      if (credSel) { credSel.value = ""; }
+      if (layerSel) { layerSel.value = ""; }
+      applyEvidenceFilter("");
+    }
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    target.classList.add("ev-flash");
+    if (flashTimers[evId]) { clearTimeout(flashTimers[evId]); }
+    flashTimers[evId] = setTimeout(function () {
+      target.classList.remove("ev-flash");
+    }, 3000);
+    return true;
+  }
+
+  document.addEventListener("click", function (event) {
+    var tag = event.target.closest ? event.target.closest(".ev-tag") : null;
+    if (tag) {
+      event.preventDefault();
+      var evId = tag.getAttribute("data-ev");
+      if (evId && !flashEvidence(evId)) {
+        tag.title = "报告中不存在该证据条目：" + evId;
+      }
+      return;
+    }
+    var toggle = event.target.closest ? event.target.closest(".mm-toggle") : null;
+    if (toggle && !toggle.classList.contains("mm-toggle-leaf")) {
+      var targetId = toggle.getAttribute("data-mm-toggle");
+      var list = document.getElementById(targetId);
+      if (list) {
+        var expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", expanded ? "false" : "true");
+        toggle.textContent = expanded ? "\u25B8" : "\u25BE";
+        list.style.display = expanded ? "none" : "";
+      }
+    }
+  });
+
+  /* ---------- 2. 思维导图整体展开 / 折叠 ---------- */
+  qsa("[data-mm-expand]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var mode = button.getAttribute("data-mm-expand");
+      qsa(".mm-children").forEach(function (list) {
+        list.style.display = mode === "none" ? "none" : "";
+      });
+      qsa(".mm-toggle").forEach(function (toggle) {
+        if (toggle.classList.contains("mm-toggle-leaf")) { return; }
+        toggle.setAttribute("aria-expanded", mode === "none" ? "false" : "true");
+        toggle.textContent = mode === "none" ? "\u25B8" : "\u25BE";
+      });
+    });
+  });
+
+  /* ---------- 3. 证据筛选 ---------- */
+  function currentFilter() {
+    var typeSel = qs("#filter-type"), credSel = qs("#filter-cred"), layerSel = qs("#filter-layer");
+    return {
+      type: typeSel ? typeSel.value : "",
+      cred: credSel ? credSel.value : "",
+      layer: layerSel ? layerSel.value : ""
+    };
+  }
+
+  function applyEvidenceFilter(term) {
+    var filter = currentFilter();
+    var cards = qsa(".evidence-card");
+    var shown = 0;
+    var keyword = (term || "").toLowerCase().trim();
+    cards.forEach(function (card) {
+      var okType = !filter.type || card.getAttribute("data-type") === filter.type;
+      var okCred = !filter.cred || card.getAttribute("data-cred") === filter.cred;
+      var okLayer = !filter.layer || card.getAttribute("data-layer") === filter.layer;
+      var blob = card.getAttribute("data-search") || "";
+      var okTerm = !keyword || blob.indexOf(keyword) !== -1;
+      if (okType && okCred && okLayer && okTerm) {
+        card.classList.remove("ev-hidden");
+        shown += 1;
+      } else {
+        card.classList.add("ev-hidden");
+      }
+    });
+    var empty = qs("#evidence-nomatch");
+    if (empty) { empty.hidden = shown !== 0; }
+    var counter = qs("#evidence-count");
+    if (counter) { counter.textContent = "显示 " + shown + " / " + cards.length + " 条"; }
+  }
+
+  ["#filter-type", "#filter-cred", "#filter-layer"].forEach(function (sel) {
+    var node = qs(sel);
+    if (node) { node.addEventListener("change", function () { applyEvidenceFilter(qs("#global-search").value); }); }
+  });
+  var reset = qs("#filter-reset");
+  if (reset) {
+    reset.addEventListener("click", function () {
+      ["#filter-type", "#filter-cred", "#filter-layer"].forEach(function (sel) {
+        var node = qs(sel);
+        if (node) { node.value = ""; }
+      });
+      var search = qs("#global-search");
+      if (search) { search.value = ""; }
+      applyEvidenceFilter("");
+      clearTextHits();
+    });
+  }
+
+  /* ---------- 4. 全局全文检索：命中证据 + 回传结论区提示 ---------- */
+  function clearTextHits() {
+    qsa("mark.hit").forEach(function (mark) {
+      var parent = mark.parentNode;
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parent.normalize();
+    });
+    qsa(".evidence-card.ev-hit-term").forEach(function (card) { card.classList.remove("ev-hit-term"); });
+    qsa(".claim, .summary-list li, .case-block p").forEach(function (node) {
+      node.classList.remove("text-hit");
+    });
+    qsa(".hit-section").forEach(function (node) { node.classList.remove("show"); node.textContent = ""; });
+  }
+
+  function markNode(node, term) {
+    /* 对元素做纯文本命中高亮：仅替换文本节点，避免破坏内部结构 */
+    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null);
+    var textNodes = [];
+    while (walker.nextNode()) { textNodes.push(walker.currentNode); }
+    var hit = false;
+    textNodes.forEach(function (textNode) {
+      var value = textNode.nodeValue || "";
+      var lower = value.toLowerCase();
+      var index = lower.indexOf(term);
+      if (index === -1) { return; }
+      hit = true;
+      var fragment = document.createDocumentFragment();
+      var cursor = 0;
+      while (index !== -1) {
+        if (index > cursor) { fragment.appendChild(document.createTextNode(value.slice(cursor, index))); }
+        var mark = document.createElement("mark");
+        mark.className = "hit";
+        mark.textContent = value.slice(index, index + term.length);
+        fragment.appendChild(mark);
+        cursor = index + term.length;
+        index = lower.indexOf(term, cursor);
+      }
+      if (cursor < value.length) { fragment.appendChild(document.createTextNode(value.slice(cursor))); }
+      textNode.parentNode.replaceChild(fragment, textNode);
+    });
+    return hit;
+  }
+
+  function runSearch(rawTerm) {
+    clearTextHits();
+    var term = (rawTerm || "").trim();
+    applyEvidenceFilter(term);
+    if (!term) { return; }
+    var lowerTerm = term.toLowerCase();
+    var counters = { findings: 0, disputes: 0, cases: 0, summary: 0 };
+
+    qsa(".claim").forEach(function (node) {
+      if (markNode(node, lowerTerm)) {
+        var section = node.closest(".module");
+        if (section) {
+          if (section.id === "sec-findings") { counters.findings += 1; }
+          else if (section.id === "sec-disputes") { counters.disputes += 1; }
+          else if (section.id === "sec-cases") { counters.cases += 1; }
+        }
+      }
+    });
+    qsa(".summary-list li").forEach(function (node) {
+      if (markNode(node, lowerTerm)) { counters.summary += 1; }
+    });
+
+    qsa(".evidence-card").forEach(function (card) {
+      if (card.classList.contains("ev-hidden")) { return; }
+      var blob = card.getAttribute("data-search") || "";
+      if (blob.indexOf(lowerTerm) !== -1) {
+        card.classList.add("ev-hit-term");
+        markNode(card.querySelector(".ev-content") || card, lowerTerm);
+      }
+    });
+
+    var box = qs("#sec-findings .hit-section") || qs(".hit-section");
+    if (box) {
+      box.textContent = "检索「" + term + "」命中：核心结论 " + counters.findings +
+        " 条、争议主张 " + counters.disputes + " 条、案例描述 " + counters.cases +
+        " 条、概览摘要 " + counters.summary + " 条、证据条目见下方高亮。";
+      box.classList.add("show");
+    }
+    var hits = qs(".search-hits");
+    if (hits) {
+      hits.textContent = "命中 " + (counters.findings + counters.disputes + counters.cases + counters.summary) +
+        " 处结论 / " + qsa(".evidence-card.ev-hit-term").length + " 条证据";
+    }
+  }
+
+  var searchInput = qs("#global-search");
+  var searchTimer = null;
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      if (searchTimer) { clearTimeout(searchTimer); }
+      searchTimer = setTimeout(function () { runSearch(searchInput.value); }, 160);
+    });
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        runSearch(searchInput.value);
+        var target = qs(".evidence-card.ev-hit-term") || qs("#sec-evidence");
+        if (target) { target.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      }
+    });
+  }
+  applyEvidenceFilter("");
+
+  /* ---------- 5. 侧边导航滚动高亮 ---------- */
+  var navLinks = qsa(".sidebar nav a");
+  var sections = qsa(".module");
+  if ("IntersectionObserver" in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        var id = entry.target.id;
+        navLinks.forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+        });
+      });
+    }, { rootMargin: "-72px 0px -65% 0px", threshold: 0 });
+    sections.forEach(function (section) { observer.observe(section); });
+  }
+
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function () {
+      navLinks.forEach(function (other) { other.classList.remove("active"); });
+      link.classList.add("active");
+    });
+  });
+})();
+</script>
+</body>
+</html>

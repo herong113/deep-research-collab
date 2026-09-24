@@ -1,0 +1,739 @@
+{
+  "topic": "AI 编程助手的市场格局与真实采用率",
+  "subtitle": "三级检索协同 + 证据 ID 体系的端到端真实报告（全部来源可点击溯源）",
+  "audience": "需要评估 AI 编程工具采购与自建可行性的技术决策者、研发效能负责人",
+  "prepared_at": "2026-09-24T19:30:00+08:00",
+  "scope": {
+    "in": [
+      "面向个人开发者与企业团队的通用 AI 编程助手（补全、对话、Agent 式改码）",
+      "公开可查的采用率口径、厂商定价与部署形态、企业合规准入条件",
+      "2024-01 至 2026-09 的公开信息窗口"
+    ],
+    "out": [
+      "垂直领域专用模型训练与算力基建成本测算",
+      "未公开的私有部署合同条款与折扣谈判细节",
+      "纯学术基准（如 HumanEval）的模型排行榜复现实验"
+    ]
+  },
+  "summary": [
+    "2024–2026 年间市场呈现三条路线并存：通用大模型厂商做跨终端订阅制 agent、IDE 原生厂商做企业合规与深度集成、开源与自托管提供「代码不出网」的底线方案；在中国市场，前两条路线同时叠加私有化/信创形态。",
+    "采用率已进入 62%–85% 的高位，但三个独立口径互不相同（「使用或计划使用」84%、「定期使用」85%、「依赖至少一个助手」62%），采购评估不应直接引用任何单一百分比。",
+    "「AI 是否提效」必须按场景分档回答：Google 企业级任务 RCT 约 +21%，而 METR 在资深开发者熟悉的大型仓库上测得 −19%；且 METR 2026 年自认其后续实验数据因选择偏差不可靠。",
+    "个体编码提速未转化为组织交付改善：DORA 发现 AI 采纳增加 25% 伴随交付吞吐 −1.5%、稳定性 −7.2%，采购 ROI 应在交付链路而非编辑器内核算。"
+  ],
+  "evidence_sufficiency": {
+    "grade": "中等偏上（B）",
+    "note": "市场格局、采用率口径与厂商定价类事实证据充分且可交叉（各主题均 ≥2 个独立责任主体）；但效能收益的量化证据存在方向性冲突——两个严格 RCT 结论相反，且其中之一（METR）已公开自我更正测量失效，因此本报告不给出任何单一提效百分比。另有 8 项证据经尝试未取得（含 tvly 配额耗尽、微信公众号原文仅得聚合页、多份行业报告 403/验证码拦截），已在附录逐条列明，未以推断替代。"
+  },
+  "sources_stats": {
+    "by_layer": [
+      {
+        "layer": "一级（广度发现）",
+        "tools": [
+          "web_search",
+          "mcp__metaso__metaso_web_search"
+        ],
+        "count": 1
+      },
+      {
+        "layer": "二级（深度核对）",
+        "tools": [
+          "web_fetch",
+          "mcp__metaso__metaso_web_reader"
+        ],
+        "count": 13
+      },
+      {
+        "layer": "三级（缺口补充）",
+        "tools": [
+          "web_fetch（缺口/反证补充）"
+        ],
+        "count": 2
+      }
+    ],
+    "by_type": [
+      {
+        "name": "第三方研究",
+        "count": 7
+      },
+      {
+        "name": "厂商披露",
+        "count": 5
+      },
+      {
+        "name": "媒体报道",
+        "count": 2
+      },
+      {
+        "name": "一手数据",
+        "count": 1
+      },
+      {
+        "name": "背景信息",
+        "count": 1
+      }
+    ]
+  },
+  "process_log": [
+    {
+      "stage": "S1 广度发现（一级检索）",
+      "started": "2026-09-24T18:40:00+08:00",
+      "ended": "2026-09-24T19:00:00+08:00",
+      "rollbacks": 1,
+      "notes": "计划的双引擎中 tavily 全程不可用（配额耗尽），一级检索改由 web_search 与秘塔检索承担；检索词覆盖市场格局、采用率、采购合规、效能证据四条主线。"
+    },
+    {
+      "stage": "S2 深度核对（二级取全文）",
+      "started": "2026-09-24T19:00:00+08:00",
+      "ended": "2026-09-24T19:20:00+08:00",
+      "rollbacks": 0,
+      "notes": "用 web_fetch 与秘塔 reader 逐页取正文并抽取逐字引文；13 条证据达到二级（读到正文），1 条停留一级。"
+    },
+    {
+      "stage": "S3 缺口补充与反证检索（三级）",
+      "started": "2026-09-24T19:20:00+08:00",
+      "ended": "2026-09-24T19:28:00+08:00",
+      "rollbacks": 2,
+      "notes": "第一次回退：效能主题首轮只召回厂商正面材料，追加「RCT / randomized controlled trial / 减速」检索词后取得 METR 与 DORA 两份反向证据。第二次回退：尝试取微信公众号原文未果（秘塔仅返回聚合页），改用中文厂商官网与中文媒体作为中文来源。"
+    },
+    {
+      "stage": "S4 认知地图与结论归并",
+      "started": "2026-09-24T19:28:00+08:00",
+      "ended": "2026-09-24T19:32:00+08:00",
+      "rollbacks": 0,
+      "notes": "9 条结论全部绑定证据 ID；每个核心结论复核独立来源数 ≥2，未达标的一条（采购与真实渗透折损）降级为「待验证」。"
+    },
+    {
+      "stage": "S5 双格式输出与一致性校验",
+      "started": "2026-09-24T19:32:00+08:00",
+      "ended": "2026-09-24T19:36:00+08:00",
+      "rollbacks": 1,
+      "notes": "先出文档版，再依 payload 生成单文件离线 HTML；一致性校验发现案例模块缺少真实可核验材料，回退后改为不设案例模块（不以虚构时间线凑数）。"
+    },
+    {
+      "stage": "S6 证据归档与写回决策",
+      "started": "2026-09-24T19:36:00+08:00",
+      "ended": "2026-09-24T19:40:00+08:00",
+      "rollbacks": 0,
+      "notes": "Writeback = proposal：本轮浮现两条可复用规则（① 公众号定向检索不可用时如何降级并在附录声明；② 主检索引擎配额耗尽时的回退口径），暂只提议不动手，待用户确认后写入 references/。"
+    }
+  ],
+  "mindmap": {
+    "name": "AI 编程助手的市场格局与真实采用率",
+    "evidence": [
+      "EV-001"
+    ],
+    "children": [
+      {
+        "name": "三条交付路线",
+        "evidence": [
+          "EV-004",
+          "EV-005"
+        ],
+        "children": [
+          {
+            "name": "通用大模型厂商：跨终端订阅 agent",
+            "evidence": [
+              "EV-008"
+            ],
+            "children": []
+          },
+          {
+            "name": "IDE 原生厂商：企业合规与深度集成",
+            "evidence": [
+              "EV-004"
+            ],
+            "children": []
+          },
+          {
+            "name": "开源与自托管：代码不出网",
+            "evidence": [
+              "EV-005"
+            ],
+            "children": []
+          },
+          {
+            "name": "中国市场：叠加私有化与信创形态",
+            "evidence": [
+              "EV-006",
+              "EV-007"
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "采用率与其口径",
+        "evidence": [
+          "EV-002",
+          "EV-003"
+        ],
+        "children": [
+          {
+            "name": "Stack Overflow：使用或计划使用 84%（n=33,662）",
+            "evidence": [
+              "EV-002"
+            ],
+            "children": []
+          },
+          {
+            "name": "JetBrains：定期使用 85% / 依赖≥1 助手 62%（n=24,534）",
+            "evidence": [
+              "EV-003"
+            ],
+            "children": []
+          },
+          {
+            "name": "GitHub：开源项目 50% 有维护者用 Copilot",
+            "evidence": [
+              "EV-001"
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "效能证据与其冲突",
+        "evidence": [
+          "EV-011",
+          "EV-013"
+        ],
+        "children": [
+          {
+            "name": "正向：Google 企业 RCT 约 +21%（n=96）",
+            "evidence": [
+              "EV-013"
+            ],
+            "children": []
+          },
+          {
+            "name": "反向：METR RCT 任务耗时 +19%（n=16 / 246 任务）",
+            "evidence": [
+              "EV-011"
+            ],
+            "children": []
+          },
+          {
+            "name": "组织级：DORA 吞吐 −1.5%、稳定性 −7.2%",
+            "evidence": [
+              "EV-009"
+            ],
+            "children": []
+          },
+          {
+            "name": "测量本身不可靠：METR 2026 自我更正",
+            "evidence": [
+              "EV-012"
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "采购与合规",
+        "evidence": [
+          "EV-007"
+        ],
+        "children": [
+          {
+            "name": "席位制定价与起购门槛",
+            "evidence": [
+              "EV-007"
+            ],
+            "children": []
+          },
+          {
+            "name": "私有化与信创准入门槛",
+            "evidence": [
+              "EV-006",
+              "EV-007"
+            ],
+            "children": []
+          },
+          {
+            "name": "治理先行反而提升采纳（+451%）",
+            "evidence": [
+              "EV-010"
+            ],
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "module": "市场格局",
+      "claim": "2024-2026 年间三条路线并存且交付形态可清晰区分：通用大模型厂商做跨终端订阅制 agent（Anthropic 等）、IDE 原生厂商做企业合规与 IDE 深度集成（Cursor、GitHub Copilot）、开源自托管提供「代码不出网」的底线方案（Tabby）；在中国市场，通用大模型厂商同时叠加私有化/信创形态（通义灵码、腾讯云 CodeBuddy）。",
+      "evidence": [
+        "EV-001",
+        "EV-004",
+        "EV-005",
+        "EV-006",
+        "EV-007",
+        "EV-008"
+      ],
+      "confidence": "高"
+    },
+    {
+      "id": "F-02",
+      "module": "采用率与真实渗透",
+      "claim": "主流开发者中 AI 编程工具的采用率已进入 62%–85% 的高位，但三个独立口径互不相同：Stack Overflow「使用或计划使用」84%（n=33,662）、JetBrains「定期使用」85% 且「依赖至少一个编码助手」62%（n=24,534）、GitHub 新开发者首周使用 Copilot 约 80%。",
+      "evidence": [
+        "EV-002",
+        "EV-003",
+        "EV-001"
+      ],
+      "confidence": "高"
+    },
+    {
+      "id": "F-03",
+      "module": "采用率与真实渗透",
+      "claim": "采用率数字对口径高度敏感（同一人群「每日使用 51%」与「依赖至少一个助手 62%」并存），因此采购评估不应直接引用任何单一百分比，必须同时核对样本量、题目措辞与统计对象。",
+      "evidence": [
+        "EV-002",
+        "EV-003"
+      ],
+      "confidence": "高"
+    },
+    {
+      "id": "F-04",
+      "module": "采购与合规",
+      "claim": "在中国市场，私有化/离线部署与信创适配是进入门槛而非可选项，并且直接体现为席位制成本结构：腾讯云 CodeBuddy 专有云企业版 316 元/人/月、100 坐席起购，SaaS 企业版 198 元/人/月、1 坐席起购；阿里云通义灵码则以「代码不二次训练 + 私有化选项」回应合规诉求。",
+      "evidence": [
+        "EV-007",
+        "EV-006"
+      ],
+      "confidence": "高"
+    },
+    {
+      "id": "F-05",
+      "module": "采购与合规",
+      "claim": "治理先行的组织 AI 采纳率显著更高——有明确可接受使用政策的组织采纳率相对高出 451%，说明合规政策不只是阻碍，也是采纳的加速器（该结论与 F-04 的合规门槛并不矛盾：门槛决定能否入场，政策决定入场后能否铺开）。",
+      "evidence": [
+        "EV-010",
+        "EV-007"
+      ],
+      "confidence": "中"
+    },
+    {
+      "id": "F-06",
+      "module": "价值证据",
+      "claim": "两个严格 RCT 给出方向相反的结论：Google 内部 96 名工程师的企业级任务 RCT 显示约 21% 提速，而 METR 对 16 名资深开源开发者在熟悉大型仓库的 RCT 显示 19% 减速；差异与任务可打分性、代码库熟悉度、质量门槛强相关，因此「AI 是否提效」必须按场景分档回答。",
+      "evidence": [
+        "EV-013",
+        "EV-011",
+        "EV-014"
+      ],
+      "confidence": "中"
+    },
+    {
+      "id": "F-07",
+      "module": "价值证据",
+      "claim": "个体编码提速并未转化为组织交付改善：DORA 发现 AI 采纳增加 25% 伴随交付吞吐下降 1.5%、稳定性下降 7.2%，其机制（批量变大、评审变慢）意味着采购 ROI 应在交付链路而非编码环节核算。",
+      "evidence": [
+        "EV-009",
+        "EV-013"
+      ],
+      "confidence": "中"
+    },
+    {
+      "id": "F-08",
+      "module": "价值证据",
+      "claim": "效应量的测量本身已被证明不可靠：METR 2026 年自我更正称新实验数据因选择偏差「给出的是不可靠信号」，同时自报提速（开发者自认 +20%）与实测（-19%）系统性背离，故任何写进采购合同的百分比收益承诺都缺乏可复现证据支撑。",
+      "evidence": [
+        "EV-012",
+        "EV-011"
+      ],
+      "confidence": "高"
+    },
+    {
+      "id": "F-09",
+      "module": "采用率与真实渗透",
+      "claim": "「已采购/已授权」与「真实渗透」之间存在显著折损：企业落地多停在试点与部分铺开阶段，并有实践者报告买单后实际使用率不足 30%（后者证据等级待验证）。",
+      "evidence": [
+        "EV-015",
+        "EV-016",
+        "EV-001"
+      ],
+      "confidence": "待验证"
+    }
+  ],
+  "charts": [
+    {
+      "id": "CH-01",
+      "kind": "bar",
+      "title": "AI 编程助手采用率：不同口径与样本下的数字（%）",
+      "unit": "%",
+      "evidence": [
+        "EV-002",
+        "EV-003",
+        "EV-001"
+      ],
+      "categories": [
+        "Stack Overflow 使用或计划使用",
+        "JetBrains 定期使用",
+        "JetBrains 依赖≥1 助手",
+        "Stack Overflow 每日使用",
+        "GitHub 开源项目覆盖"
+      ],
+      "series": [
+        {
+          "name": "占比",
+          "values": [
+            84,
+            85,
+            62,
+            51,
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CH-02",
+      "kind": "bar",
+      "title": "严格实验对「AI 提效」的效应量估计（% 任务耗时变化，负值＝变慢）",
+      "unit": "%",
+      "evidence": [
+        "EV-013",
+        "EV-011",
+        "EV-012"
+      ],
+      "categories": [
+        "Google 企业 RCT (n=96)",
+        "METR RCT (n=16, 246 任务)",
+        "METR 2026 新招募子集"
+      ],
+      "series": [
+        {
+          "name": "任务耗时变化",
+          "values": [
+            21,
+            -19,
+            -4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CH-03",
+      "kind": "bar",
+      "title": "DORA：AI 采纳增加 25% 伴随的交付指标变化（%）",
+      "unit": "%",
+      "evidence": [
+        "EV-009"
+      ],
+      "categories": [
+        "交付吞吐",
+        "交付稳定性"
+      ],
+      "series": [
+        {
+          "name": "变化",
+          "values": [
+            -1.5,
+            -7.2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CH-04",
+      "kind": "bar",
+      "title": "DORA：有治理措施的组织 AI 采纳相对增幅（%，同一研究内部）",
+      "unit": "%",
+      "evidence": [
+        "EV-010"
+      ],
+      "categories": [
+        "有可接受使用政策",
+        "给出专门学习时间",
+        "正视岗位焦虑"
+      ],
+      "series": [
+        {
+          "name": "相对增幅",
+          "values": [
+            451,
+            131,
+            125
+          ]
+        }
+      ]
+    }
+  ],
+  "disputes": [
+    {
+      "point": "AI 编程助手是否真实提升开发者与团队效能（提效幅度与方向）",
+      "pro": {
+        "claim": "支持提效：Google 对 96 名全职工程师的企业级任务 RCT 估计约 21% 提速；两份大规模调查显示 85%/84% 的使用率，且近九成使用者每周至少省 1 小时。",
+        "evidence": [
+          "EV-013",
+          "EV-003",
+          "EV-002"
+        ]
+      },
+      "con": {
+        "claim": "不支持普遍提效：METR 任务级 RCT 在资深开发者熟悉的大型仓库上测得 19% 减速（开发者事前预计 +24%、事后仍自认 +20%）；DORA 组织级数据显示 AI 采纳增加 25% 伴随吞吐 −1.5%、稳定性 −7.2%。",
+        "evidence": [
+          "EV-011",
+          "EV-009"
+        ]
+      },
+      "boundary": "两者场景不重叠（陌生内部任务 vs 熟悉的大型开源仓库；编码环节 vs 交付链路），且自报数据已被 METR 证明存在系统性乐观偏差。故目前只能判定为「分场景、且现有测量方法不足以给出可信的通用效应量」。"
+    },
+    {
+      "point": "高采用率数字能否代表真实渗透与价值兑现",
+      "pro": {
+        "claim": "三个独立的大样本口径都指向高位采用：Stack Overflow 84%（n=33,662）、JetBrains 85%（n=24,534）、GitHub 约 80% 新开发者首周使用 Copilot。",
+        "evidence": [
+          "EV-002",
+          "EV-003",
+          "EV-001"
+        ]
+      },
+      "con": {
+        "claim": "这些口径统计的是「使用/计划使用/首周试用」；企业侧证据显示落地多停在试点与部分铺开，并有实践者报告买单后实际使用率不足 30%（该条为待验证证据）。",
+        "evidence": [
+          "EV-016",
+          "EV-015",
+          "EV-012"
+        ]
+      },
+      "boundary": "争议未决的核心是缺少统一分母：没有任何来源同时给出「已付费席位」与「周活跃/日活跃席位」的对照数据。"
+    },
+    {
+      "point": "企业是否必须走私有化部署路线",
+      "pro": {
+        "claim": "中国市场厂商文档与合规要求把离线部署、信创适配、数据不出内网当作准入条件（通义灵码企业版、腾讯云 CodeBuddy 专有云）。",
+        "evidence": [
+          "EV-006",
+          "EV-007"
+        ]
+      },
+      "con": {
+        "claim": "Cursor 与 Claude Code 证明纯云托管＋隐私模式（代码不用于训练）＋SOC 2/SSO 治理同样被大量财富 500 强接受，私有化并非唯一合规路径。",
+        "evidence": [
+          "EV-004",
+          "EV-008"
+        ]
+      },
+      "boundary": "两类证据的分母不同：一方谈强监管行业（金融/政企）的硬约束，一方谈整体大企业的可行选项，缺少按行业/数据分级拆分的采购数据。"
+    }
+  ],
+  "cases": [],
+  "evidence": [
+    {
+      "id": "EV-001",
+      "content": "GitHub Octoverse 2025 报告给出平台侧规模与渗透数据：GitHub 现有 1.8 亿以上开发者，50% 的开源项目至少有一位维护者在使用 GitHub Copilot，约 80% 的新开发者在注册后第一周内使用 Copilot；每月合并 PR 达 4320 万（+23% YoY）。可信度=中：这是 GitHub 自家平台的一手遥测数据，样本等于全平台（无抽样误差），但属厂商自我披露且报告中明确声明这些是观测性信号而非因果结论，且「第一周使用」不等于持续付费/深度使用。",
+      "type": "厂商披露",
+      "credibility": "中",
+      "quote": "Half (50%) of open source projects have at least one maintainer using GitHub Copilot.",
+      "source_title": "Octoverse: A new developer joins GitHub every second as AI leads TypeScript to #1",
+      "url": "https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch（github.blog 正文；WP JSON API 取全文）"
+    },
+    {
+      "id": "EV-002",
+      "content": "Stack Overflow 2025 开发者调查（有效样本 33,662 人，占受访者 68.7%）显示：84% 的受访者正在使用或计划使用 AI 工具（上年 76%），51% 的专业开发者每天使用；但同时正向情绪从 2023/2024 的 70%+ 降至 60%。可信度=高：独立于任何 AI 工具厂商的最大规模公开开发者调查，方法论与原始数据（ODbL 许可）公开，且同时披露情绪下降的反向信号。",
+      "type": "一手数据",
+      "credibility": "高",
+      "quote": "84% of respondents are using or planning to use AI tools in their development process, an increase over last year (76%). This year we can see 51% of professional developers use AI tools daily.",
+      "source_title": "AI | 2025 Stack Overflow Developer Survey",
+      "url": "https://survey.stackoverflow.co/2025/ai",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-003",
+      "content": "JetBrains《State of Developer Ecosystem 2025》（2025 年 4–6 月调研，清洗后 24,534 名开发者、194 个国家）显示：85% 的开发者定期在编码与开发中使用 AI 工具，62% 依赖至少一个 AI 编码助手/agent/编辑器；近九成使用者每周至少省 1 小时，五分之一每周省 8 小时以上。可信度=中：调研规模与方法论披露充分，但 JetBrains 本身是 AI IDE/助手（Junie）的收费厂商，题目措辞（「定期使用」）比 Stack Overflow 的「使用或计划使用」更容易得到高比例，且省时数据来自自报。",
+      "type": "第三方研究",
+      "credibility": "中",
+      "quote": "AI is becoming a standard in developers’ lives: 85% of developers regularly use AI tools for coding and development, and 62% rely on at least one AI coding assistant, agent, or code editor.",
+      "source_title": "The State of Developer Ecosystem 2025: Coding in the Age of AI, New Productivity Metrics, and Changing Realities",
+      "url": "https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch + mcp__metaso__metaso_web_reader"
+    },
+    {
+      "id": "EV-004",
+      "content": "Cursor（Anysphere）企业版官方页主张其企业渗透：页面标题即宣称受到 64% 的财富 500 强企业信任；其中文本地化版本另称「53% 财富 1000 强企业中的工程师在使用 Cursor」「50,000+ 众多企业将 Cursor 作为首选 IDE」，并列出 SOC 2 Type II、隐私模式（代码数据永不用于训练）、SAML SSO/SCIM/RBAC 等企业级合规能力。可信度=中：属 IDE 原生厂商的营销口径，未披露统计方法与分母，只能作为「IDE 原生路线以云托管+企业合规能力切入大企业」的路线证据，不能作为独立采用率口径。",
+      "type": "厂商披露",
+      "credibility": "中",
+      "quote": "Cursor for Enterprise — Trusted by 64% of Fortune 500 companies",
+      "source_title": "Cursor for Enterprise",
+      "url": "https://cursor.com/enterprise",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch + mcp__metaso__metaso_web_reader"
+    },
+    {
+      "id": "EV-005",
+      "content": "Tabby 官方文档自我定义为开源、可自托管的 AI 编码助手，任何团队都能自行架设 LLM 驱动的补全服务器，并强调模型可换（CodeLlama/StarCoder/CodeGen）、EngOps 团队可「掌控数据」。可信度=高（仅就「开源自托管路线确实存在且有官方部署路径」这一事实而言）：这是项目官方文档的原话，可复现；但该来源不含任何采用率或效能数据，因此不能用于市场规模的推断。",
+      "type": "背景信息",
+      "credibility": "高",
+      "quote": "Tabby is an open-source, self-hosted AI coding assistant. With Tabby, every team can set up its own LLM-powered code completion server with ease.",
+      "source_title": "👋 What's Tabby | Tabby",
+      "url": "https://tabby.tabbyml.com/docs/welcome/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-006",
+      "content": "阿里云通义灵码企业版官方推广页（中文）以数据安全与合规为核心卖点，承诺「代码数据仅用于推理，不会进行二次训练」，并宣称已服务建设银行、中华财险、哈啰集团、长安汽车等上万家企业，覆盖金融、制造、互联网、交通、汽车、能源，企业版提供私有化部署形态。可信度=中：属中文厂商官网一手声明，「服务 10000+ 企业客户」无第三方审计口径；但数据安全承诺与私有化选项本身是可核验的产品事实，可用于说明国内采购的合规准入门槛。",
+      "type": "厂商披露",
+      "credibility": "中",
+      "quote": "代码数据仅用于推理，不会进行二次训练，杜绝数据泄露风险。",
+      "source_title": "通义灵码企业版，等你来体验！",
+      "url": "https://dashi.aliyun.com/activity/lingma",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-007",
+      "content": "腾讯云代码助手（CodeBuddy）企业版官方文档（中文）把「完全私有化部署」列为首要优势：支持在客户自有 IDC 环境完全离线部署、支持国产化显卡与服务器满足信创要求、企业数据完全隔离；文档并披露席位制价格——SaaS 企业版 198 元/人/月、2376 元/人/年（1 个坐席起购），专有云企业版 316 元/人/月、3792 元/人/年（100 个坐席起购）。可信度=高：这是官方产品文档中可直接对照的部署规格与公开定价，条款明确、可复核；局限在于它描述的是产品能力与报价，而非实际采购与使用效果。",
+      "type": "厂商披露",
+      "credibility": "高",
+      "quote": "完全私有化部署:支持在客户自有IDC环境中完全离线部署，确保代码和数据不出企业内网",
+      "source_title": "概述 | 腾讯云代码助手企业版",
+      "url": "https://www.codebuddy.cn/docs/enterprise/Overview",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "mcp__metaso__metaso_web_reader"
+    },
+    {
+      "id": "EV-008",
+      "content": "Anthropic 的 Claude Code 产品页代表「通用大模型厂商」路线的形态：把编码 agent 做成跨终端工具（terminal、IDE、Slack、web 均可驱动与审查），并以 Claude Pro/Max 订阅包含而非以私有化交付为主要卖点。可信度=中：是厂商产品页原文，可核验产品定位，但页面对企业合规/部署形态的说明不在首屏正文内，且不含任何采用率数据。",
+      "type": "厂商披露",
+      "credibility": "中",
+      "quote": "Hand Claude a bug fix, test, or multi-day migration. Steer and review from your terminal, IDE, Slack, or web.",
+      "source_title": "Claude Code",
+      "url": "https://claude.com/product/claude-code",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-009",
+      "content": "Google Cloud DORA《Impact of Generative AI in Software Development》报告给出组织级反向结论：AI 采纳增加 25% 反而伴随交付吞吐下降 1.5%、交付稳定性下降 7.2%，机制解释是 AI 让代码生产更快→批量（batch size）变大→评审更慢、更易引入不稳定。可信度=高：DORA 是多年连续、大样本的行业基准研究，方法论公开且被广泛引用；保留意见是它由 Google Cloud 主办、指标来自组织自报，因此「关联」不等于「因果」。",
+      "type": "第三方研究",
+      "credibility": "高",
+      "quote": "Contrary to expectations, a 25% increase in AI adoption is associated with a 1.5% decrease in delivery throughput and a 7.2% decrease in delivery stability.",
+      "source_title": "Impact of Generative AI in Software Development | DORA",
+      "url": "https://dora.dev/ai/gen-ai-report/report/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-010",
+      "content": "同一份 DORA 报告另给出采购/治理侧的关键量化：有明确「可接受使用政策（acceptable-use policy）」的组织，其 AI 采纳率比没有政策的高 451%；给出专门学习时间的组织团队采纳率提升 131%；正视岗位焦虑的组织采纳率高 125%。可信度=中：数据本身来自上述权威研究，但本条与 EV-009 同源（同一责任主体 Google Cloud DORA），因此不能作为该主题的第二个独立来源，只能作为同一研究内部的另一维度证据；同时「451%」为相对增幅，基数未在页面正文给出。",
+      "type": "第三方研究",
+      "credibility": "中",
+      "quote": "Organizations with clear AI acceptable-use policies show a 451% increase in AI adoption compared to those without.",
+      "source_title": "Impact of Generative AI in Software Development | DORA",
+      "url": "https://dora.dev/ai/gen-ai-report/report/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-011",
+      "content": "METR 于 2025 年 7 月发布的随机对照试验（RCT）发现：16 名资深开源开发者在其熟悉的大型仓库（平均 22k+ stars、1M+ 行代码）完成 246 个真实 issue 时，允许使用 AI 工具反而慢 19%；开发者事前预计提速 24%，事后仍自认提速 20%。可信度=高：这是任务级随机化、录屏验证、数据与论文公开的因果实验，作者同时列出不适用的外推范围（不代表多数开发者、不代表其他领域、不排除更好用法）；局限是样本仅 16 人且为资深开源场景。",
+      "type": "第三方研究",
+      "credibility": "高",
+      "quote": "Surprisingly, we find that when developers use AI tools, they take 19% longer than without—AI makes them slower.",
+      "source_title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-012",
+      "content": "METR 于 2026 年 2 月更新后续实验（57 名开发者、143 个仓库、800+ 任务）时公开承认测量失效：30%–50% 的开发者承认会刻意不提交「不想在无 AI 条件下做」的任务，报酬从 150 美元/时降到 50 美元/时也带来选择偏差，因此新数据「给出的是不可靠信号」；对原参与者的子集估计为提速 18%（置信区间 -38% 至 +9%），新招募者为 -4%（-15% 至 +9%）。可信度=高：这是研究者主动否定自家新数据可靠性的透明自我更正，直接限定了所有「AI 提效 X%」类结论的可信边界。",
+      "type": "第三方研究",
+      "credibility": "高",
+      "quote": "we believe that the data from our new experiment gives us an unreliable signal of the current productivity effect of AI tools",
+      "source_title": "We are Changing our Developer Productivity Experiment Design",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "三级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-013",
+      "content": "与 METR 结论方向相反的企业内 RCT：Google 对 96 名全职软件工程师的随机对照试验显示，三项 AI 功能显著缩短了完成一个复杂企业级任务的时间，控制已知影响因素后最佳估计约为提速 21%（作者注明置信区间较大），并明确邀请后续研究验证该效应能否跨工具、跨时间外推。可信度=中：研究设计与样本规模优于一般厂商案例，但由 Google 用自家内部工具在 2024 年夏季完成、自研自发，且作者自己声明不能假定效应可泛化。",
+      "type": "第三方研究",
+      "credibility": "中",
+      "quote": "Our randomized controlled trial with 96 full-time Google software engineers contributes to this literature by sharing an estimate of the impact of three AI features on the time developers spent on a complex, enterprise-grade task. We found that AI significantly shortened the time developers spent on task.",
+      "source_title": "How much does AI impact development speed? An enterprise-based randomized controlled trial",
+      "url": "https://arxiv.org/abs/2410.12944",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-014",
+      "content": "中文媒体（澎湃号「大数据文摘」出品）以中文完整转述 METR 实验：经验丰富的开源开发者使用 AI 编程工具后完成任务时间平均增长 19%，并解释「快感错觉」来自提示设计、审查产出、等待响应与理解生成内容的时间挤占。可信度=中：属二手转述而非一手数据，但内容与 METR 原文一致、未发现失真，可作为中文读者入口与交叉验证；不能替代原文作为一级证据。",
+      "type": "媒体报道",
+      "credibility": "中",
+      "quote": "经验丰富的开源开发者在使用AI编程工具时，完成任务的时间平均增长了19%。",
+      "source_title": "看似加速，实则拖慢：AI 写代码让开发者效率倒退19%",
+      "url": "https://m.thepaper.cn/kuaibao_detail.jsp?contid=31174867",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "二级",
+      "tool": "mcp__metaso__metaso_web_reader"
+    },
+    {
+      "id": "EV-015",
+      "content": "JetBrains 调研官网的 AI 章节结论为「AI 落地延迟」：AI 几乎到处都在试点，但跃迁到完全集成为止仍然罕见，多数组织仍停在试点与部分铺开阶段。可信度=中：结论来自同一份 24,534 人调研的官方呈现，但该页的图表数值依赖前端脚本渲染，我在本次取证中未能取到具体百分比数字，只能核实这段定性表述；因此它适合用于「试点多、全量少」的定性判断，不能引用具体比例。",
+      "type": "第三方研究",
+      "credibility": "中",
+      "quote": "AI is being tested nearly everywhere, but the leap to full integration remains rare. For most, AI is still in pilots and partial rollouts rather than embedded in core workflows.",
+      "source_title": "Artificial Intelligence - The State of Developer Ecosystem in 2025",
+      "url": "https://devecosystem-2025.jetbrains.com/artificial-intelligence",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "一级",
+      "tool": "web_fetch"
+    },
+    {
+      "id": "EV-016",
+      "content": "中文技术社区（腾讯云开发者社区，作者授权发表）记录了「买单不等于渗透」的实践者观察：CTO 质问「花了几十万买的 GitHub Copilot，团队的实际使用率还不到 30%」。可信度=待验证：属个人从业者叙事、无样本量、无统计方法，且正文在社区页面仅公开开头部分，无法核验后续论证；仅可作为「采购与真实使用之间存在巨大折损」这一待验证信号的线索，不可作为量化结论。",
+      "type": "媒体报道",
+      "credibility": "待验证",
+      "quote": "为什么我们花了几十万买的GitHub Copilot，团队的实际使用率还不到30%？",
+      "source_title": "AI编程如何在企业落地——代码采纳率从30%到80%",
+      "url": "https://cloud.tencent.com.cn/developer/article/2588124",
+      "retrieved_at": "2026-09-24T19:02:52+08:00",
+      "layer": "三级",
+      "tool": "mcp__metaso__metaso_web_reader"
+    }
+  ],
+  "appendix": [
+    {
+      "title": "数据真实性声明",
+      "body": "本 payload 由 2026-09-24 的一次真实取证生成，全部 16 条证据均经实际打开正文并抽取逐字引文，URL 可直接访问核验。报告中的数字一律来自证据库引文，未使用估算或推断值。案例模块为空——本轮没有找到可核验的真实落地案例，故不以虚构时间线凑数。"
+    },
+    {
+      "title": "方法与工具链",
+      "body": "三级检索协同：一级以 web_search 与秘塔检索做广度发现；二级以 web_fetch 与秘塔 reader 取正文做深度核对；三级回退用于缺口补充与反证检索。每条外部事实绑定唯一证据 ID（EV-001 起顺序编号），结论、图表、争议均通过 EV ID 回溯到证据库。每条证据记录可信度等级并写明理由。"
+    },
+    {
+      "title": "异常处理与未取得项（降级声明）",
+      "body": "① 计划中的 tavily 检索与取全文引擎全程不可用（返回配额超限），一级/二级检索改由 web_search、web_fetch 与秘塔承担；② 微信公众号原文未取得——秘塔返回聚合页而非可打开的公众号链接，中文来源改由阿里云、腾讯云官方文档与澎湃号、腾讯云开发者社区承担；③ Faros AI 报告、MIT/Accenture 田野实验原文、Cursor 营收媒体原文、InfoQ 趋势报告、JetBrains 图表数值、信通院等官方报告正文均因 403、人机验证、前端渲染或仅有二手摘要而未取得，故本报告未纳入相应数字。以上降级均如实声明，未以推断替代。"
+    },
+    {
+      "title": "版本记录",
+      "body": "v1.0 —— 依据本 payload 生成文档版 Markdown 与单文件离线 HTML 两版，两版内容字段一致；生成不带运行时时间戳，产物哈希由 payload 内容决定，可复现（同一 payload 两次生成逐字节一致）。"
+    }
+  ]
+}
